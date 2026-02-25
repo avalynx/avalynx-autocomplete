@@ -10,11 +10,11 @@ const products = [
 ];
 
 const categories = [
-    { key: 'CAT001', value: 'Computer' },
-    { key: 'CAT002', value: 'Elektronik' },
+    { key: 'CAT001', value: 'Computers' },
+    { key: 'CAT002', value: 'Electronics' },
     { key: 'CAT003', value: 'Smartphones' },
     { key: 'CAT004', value: 'Tablets' },
-    { key: 'CAT005', value: 'Zubehör' },
+    { key: 'CAT005', value: 'Accessories' },
 ];
 
 const tags = [
@@ -42,29 +42,29 @@ const skills = [
 ];
 
 const priorities = [
-    { key: 'PRI001', value: 'Kritisch' },
-    { key: 'PRI002', value: 'Hoch' },
-    { key: 'PRI003', value: 'Mittel' },
-    { key: 'PRI004', value: 'Niedrig' },
+    { key: 'PRI001', value: 'Critical' },
+    { key: 'PRI002', value: 'High' },
+    { key: 'PRI003', value: 'Medium' },
+    { key: 'PRI004', value: 'Low' },
     { key: 'PRI005', value: 'Optional' },
     { key: 'PRI006', value: 'Backlog' },
 ];
 
 const languages = [
-    { key: 'LNG001', value: 'Deutsch' },
-    { key: 'LNG002', value: 'Englisch' },
-    { key: 'LNG003', value: 'Französisch' },
-    { key: 'LNG004', value: 'Spanisch' },
-    { key: 'LNG005', value: 'Italienisch' },
-    { key: 'LNG006', value: 'Portugiesisch' },
-    { key: 'LNG007', value: 'Niederländisch' },
-    { key: 'LNG008', value: 'Polnisch' },
+    { key: 'LNG001', value: 'German' },
+    { key: 'LNG002', value: 'English' },
+    { key: 'LNG003', value: 'French' },
+    { key: 'LNG004', value: 'Spanish' },
+    { key: 'LNG005', value: 'Italian' },
+    { key: 'LNG006', value: 'Portuguese' },
+    { key: 'LNG007', value: 'Dutch' },
+    { key: 'LNG008', value: 'Polish' },
 ];
 
 const users = [
-    { key: 'USR001', value: 'Max Mustermann' },
-    { key: 'USR002', value: 'Maria Schmidt' },
-    { key: 'USR003', value: 'Martin Meier' },
-    { key: 'USR004', value: 'Monika Weber' },
-    { key: 'USR005', value: 'Michael Braun' },
+    { key: 'USR001', value: 'John Doe' },
+    { key: 'USR002', value: 'Jane Smith' },
+    { key: 'USR003', value: 'Mark Miller' },
+    { key: 'USR004', value: 'Mary White' },
+    { key: 'USR005', value: 'Michael Brown' },
 ];

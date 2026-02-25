@@ -1,0 +1,30 @@
+{
+    "name": "avalynx/avalynx-autocomplete",
+    "description": "AvalynxAutocomplete is a lightweight, customizable autocomplete component for web applications. It is designed to be used with Bootstrap version 5.3 or higher and does not require any framework dependencies.",
+    "keywords": [
+        "avalynx",
+        "autocomplete",
+        "dropdown",
+        "bootstrap",
+        "bootstrap5",
+        "livesearch",
+        "component"
+    ],
+    "homepage": "https://github.com/avalynx/avalynx-autocomplete",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Juergen Schwind an the AvalynxAutocomplete authors",
+            "homepage": "https://github.com/avalynx/avalynx-autocomplete/graphs/contributors"
+        }
+    ],
+    "require": {
+        "twbs/bootstrap": "^5.3"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/avalynx/avalynx-autocomplete.git"
+        }
+    ]
+}
