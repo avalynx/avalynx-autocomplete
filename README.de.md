@@ -8,31 +8,38 @@
 [![codecov](https://codecov.io/gh/avalynx/avalynx-autocomplete/branch/main/graph/badge.svg)](https://codecov.io/gh/avalynx/avalynx-autocomplete)
 [![GitHub stars](https://img.shields.io/github/stars/avalynx/avalynx-autocomplete?style=flat&logo=github)](https://github.com/avalynx/avalynx-autocomplete)
 
-AvalynxSelect ist eine leichtgewichtige, anpassbare Select-Dropdown-Komponente für Webanwendungen. Sie wurde für die Verwendung mit Bootstrap Version 5.3 oder höher entwickelt und benötigt keine Framework-Abhängigkeiten.
+AvalynxAutocomplete ist eine leichtgewichtige, anpassbare Autocomplete-Komponente für Webanwendungen. Sie wurde für die Verwendung mit Bootstrap Version 5.3 oder höher entwickelt und benötigt keine Framework-Abhängigkeiten.
 
 ## Funktionen
 
-- **Anpassbare Dropdowns**: Unterstützt verschiedene Anpassungsoptionen wie Live-Suche, Groß-/Kleinschreibung, scrollbare Listen und mehr.
-- **AJAX-Unterstützung**: Dynamisches Laden von Listenelementen über AJAX mit Unterstützung für benutzerdefiniertes Mapping, Debouncing und Prefetching.
+- **Anpassbare Autocomplete-Eingaben**: Unterstützt verschiedene Anpassungsoptionen wie Single- und Multi-Select, Case-Sensitivity, Mindestlänge für die Suche und Debouncing.
+- **Flexible Datenquellen**: Unterstützung für statische Daten oder dynamisches Laden über eine benutzerdefinierte `fetchData`-Funktion.
+- **Multi-Select-Unterstützung**: Verwaltung von mehreren Auswahlen mit Tags, die entweder oberhalb oder inline im Eingabefeld angezeigt werden können.
 - **Bootstrap-Integration**: Entwickelt für die nahtlose Integration mit Bootstrap >= 5.3.
-- **Einfach zu bedienen**: Einfache API zum Erstellen und Verwalten von Select-Dropdowns in Ihren Webanwendungen.
+- **Einfach zu bedienen**: Einfache API zum Erstellen und Verwalten von Autocomplete-Feldern in Ihren Webanwendungen.
 
 ## Beispiele
 
-Hier ist ein einfaches Beispiel für die Verwendung von AvalynxSelect in Ihrem Projekt:
+Hier ist eine Übersicht über verschiedene Anwendungsfälle für AvalynxAutocomplete:
 
 * [Übersicht](https://avalynx-autocomplete.jbs-newmedia.de/examples/index.html)
-* [Einfaches Select](https://avalynx-autocomplete.jbs-newmedia.de/examples/simple-select.html)
-* [Einfaches Select mit Live-Suche und verschiedenen Optionen](https://avalynx-autocomplete.jbs-newmedia.de/examples/simple-select-livesearch.html)
-* [Einfaches Select mit AJAX](https://avalynx-autocomplete.jbs-newmedia.de/examples/simple-ajax-select.html)
-* [Einfaches Select mit responsivem Design](https://avalynx-autocomplete.jbs-newmedia.de/examples/simple-select-responsive.html)
-* [Einfaches Select mit Event-Listenern](https://avalynx-autocomplete.jbs-newmedia.de/examples/simple-select-disabled.html)
-* [Deaktiviertes Select](https://avalynx-autocomplete.jbs-newmedia.de/examples/simple-select-disabled.html)
-* [Select mit Standardwert](https://avalynx-autocomplete.jbs-newmedia.de/examples/simple-select-default-value.html)
+* [All-in-One-Demo](https://avalynx-autocomplete.jbs-newmedia.de/examples/autocomplete.html)
+* [Single-Select (Button-Stil)](https://avalynx-autocomplete.jbs-newmedia.de/examples/single-select-button.html)
+* [Single-Select (Icon-Stil)](https://avalynx-autocomplete.jbs-newmedia.de/examples/single-select-icon.html)
+* [Single-Select (vorausgewählt)](https://avalynx-autocomplete.jbs-newmedia.de/examples/single-select-preselected.html)
+* [Single-Select (vorausgewählt, Ajax)](https://avalynx-autocomplete.jbs-newmedia.de/examples/single-select-preselected-ajax.html)
+* [Multi-Select (Tags oberhalb, Button-Stil)](https://avalynx-autocomplete.jbs-newmedia.de/examples/multi-select-above-button.html)
+* [Multi-Select (Tags oberhalb, Button-Stil, Ajax)](https://avalynx-autocomplete.jbs-newmedia.de/examples/multi-select-above-button-ajax.html)
+* [Multi-Select (Tags oberhalb, Icon-Stil)](https://avalynx-autocomplete.jbs-newmedia.de/examples/multi-select-above-icon.html)
+* [Multi-Select (Tags oberhalb, Icon-Stil, Ajax)](https://avalynx-autocomplete.jbs-newmedia.de/examples/multi-select-above-icon-ajax.html)
+* [Multi-Select (Tags inline, Button-Stil)](https://avalynx-autocomplete.jbs-newmedia.de/examples/multi-select-inline-button.html)
+* [Multi-Select (Tags inline, Button-Stil, Ajax)](https://avalynx-autocomplete.jbs-newmedia.de/examples/multi-select-inline-button-ajax.html)
+* [Multi-Select (Tags inline, Icon-Stil)](https://avalynx-autocomplete.jbs-newmedia.de/examples/multi-select-inline-icon.html)
+* [Multi-Select (Tags inline, Icon-Stil, Ajax)](https://avalynx-autocomplete.jbs-newmedia.de/examples/multi-select-inline-icon-ajax.html)
 
 ## Installation
 
-Um AvalynxSelect in Ihrem Projekt zu verwenden, können Sie es direkt in Ihre HTML-Datei einbinden. Stellen Sie sicher, dass Sie Bootstrap 5.3 oder höher in Ihrem Projekt eingebunden haben, damit AvalynxSelect korrekt funktioniert.
+Um AvalynxAutocomplete in Ihrem Projekt zu verwenden, können Sie es direkt in Ihre HTML-Datei einbinden. Stellen Sie sicher, dass Sie Bootstrap 5.3 oder höher in Ihrem Projekt eingebunden haben.
 
 Binden Sie zuerst Bootstrap ein:
 
@@ -42,148 +49,136 @@ Binden Sie zuerst Bootstrap ein:
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
 ```
 
-Binden Sie dann AvalynxSelect ein:
+Binden Sie dann AvalynxAutocomplete ein (CSS und JS):
 
 ```html
-<script src="pfad/zu/avalynx-select.js"></script>
+<link rel="stylesheet" href="pfad/zu/avalynx-autocomplete.css">
+<script src="pfad/zu/avalynx-autocomplete.js"></script>
 ```
 
-Ersetzen Sie `pfad/zu/avalynx-select.js` durch den tatsächlichen Pfad zur Datei in Ihrem Projekt.
+Ersetzen Sie `pfad/zu/` durch den tatsächlichen Pfad zur Datei in Ihrem Projekt.
 
-## Installation über jsDelivr ([Link](https://cdn.jsdelivr.net/npm/avalynx-select/))
+## Installation über jsDelivr ([Link](https://cdn.jsdelivr.net/npm/avalynx-autocomplete/))
 
-AvalynxSelect ist auch über [jsDelivr](https://www.jsdelivr.com/) verfügbar. Sie können es wie folgt in Ihr Projekt einbinden:
+AvalynxAutocomplete ist auch über [jsDelivr](https://www.jsdelivr.com/) verfügbar. Sie können es wie folgt in Ihr Projekt einbinden:
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/avalynx-select@1.2.1/dist/js/avalynx-select.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/avalynx-autocomplete@1.0.0/dist/css/avalynx-autocomplete.css">
+<script src="https://cdn.jsdelivr.net/npm/avalynx-autocomplete@1.0.0/dist/js/avalynx-autocomplete.js"></script>
 ```
 
-Stellen Sie sicher, dass Sie auch das JS/CSS von Bootstrap in Ihr Projekt einbinden, um eine korrekte Anzeige von AvalynxSelect zu gewährleisten.
+Stellen Sie sicher, dass Sie auch das JS/CSS von Bootstrap in Ihr Projekt einbinden.
 
-## Installation über NPM ([Link](https://www.npmjs.com/package/avalynx-select))
+## Installation über NPM ([Link](https://www.npmjs.com/package/avalynx-autocomplete))
 
-AvalynxSelect ist auch als npm-Paket verfügbar. Sie können es mit dem folgenden Befehl zu Ihrem Projekt hinzufügen:
+AvalynxAutocomplete ist auch als npm-Paket verfügbar. Sie können es mit dem folgenden Befehl zu Ihrem Projekt hinzufügen:
 
 ```bash
-npm install avalynx-select
+npm install avalynx-autocomplete
 ```
 
-Nach der Installation können Sie AvalynxSelect wie folgt in Ihre JavaScript-Datei importieren:
+Nach der Installation können Sie AvalynxAutocomplete wie folgt in Ihre JavaScript-Datei importieren:
 
 ```javascript
-import { AvalynxSelect } from 'avalynx-select';
+import { AvalynxAutocomplete } from 'avalynx-autocomplete';
 ```
-
-Stellen Sie sicher, dass Sie auch das JS/CSS von Bootstrap in Ihr Projekt einbinden, um eine korrekte Anzeige von AvalynxSelect zu gewährleisten.
 
 ## Installation über Symfony AssetMapper
 
 ```bash
-php bin/console importmap:require avalynx-select
+php bin/console importmap:require avalynx-autocomplete
 ```
 
-Nach der Installation können Sie AvalynxSelect wie folgt in Ihre JavaScript-Datei importieren:
+Nach der Installation können Sie AvalynxAutocomplete wie folgt in Ihre JavaScript-Datei importieren:
 
 ```javascript
-import { AvalynxSelect } from 'avalynx-select';
+import { AvalynxAutocomplete } from 'avalynx-autocomplete';
 ```
-
-Stellen Sie sicher, dass Sie auch das JS/CSS von Bootstrap in Ihr Projekt einbinden, um eine korrekte Anzeige von AvalynxSelect zu gewährleisten.
 
 ## Installation über Symfony AssetComposer
 
 Weitere Informationen zum Symfony AssetComposer Bundle finden Sie [hier](https://github.com/jbsnewmedia/asset-composer-bundle).
 
 ```twig
-{% do addAssetComposer('avalynx/avalynx-select/dist/js/avalynx-select.js') %}
+{% do addAssetComposer('avalynx/avalynx-autocomplete/dist/css/avalynx-autocomplete.css') %}
+{% do addAssetComposer('avalynx/avalynx-autocomplete/dist/js/avalynx-autocomplete.js') %}
 ```
 
-Stellen Sie sicher, dass Sie auch das JS/CSS von Bootstrap in Ihr Projekt einbinden, um eine korrekte Anzeige von AvalynxSelect zu gewährleisten.
+## Installation über Composer ([Link](https://packagist.org/packages/avalynx/avalynx-autocomplete))
 
-## Installation über Composer ([Link](https://packagist.org/packages/avalynx/avalynx-select))
-
-AvalynxSelect ist auch als Composer-Paket verfügbar. Sie können es mit dem folgenden Befehl zu Ihrem Projekt hinzufügen:
+AvalynxAutocomplete ist auch als Composer-Paket verfügbar. Sie können es mit dem folgenden Befehl zu Ihrem Projekt hinzufügen:
 
 ```bash
-composer require avalynx/avalynx-select
+composer require avalynx/avalynx-autocomplete
 ```
 
-Nach der Installation können Sie AvalynxSelect wie folgt in Ihre HTML-Datei einbinden:
+Nach der Installation können Sie AvalynxAutocomplete wie folgt in Ihre HTML-Datei einbinden:
 
 ```html
-<script src="vendor/avalynx/avalynx-select/dist/js/avalynx-select.js"></script>
+<link rel="stylesheet" href="vendor/avalynx/avalynx-autocomplete/dist/css/avalynx-autocomplete.css">
+<script src="vendor/avalynx/avalynx-autocomplete/dist/js/avalynx-autocomplete.js"></script>
 ``` 
-
-Stellen Sie sicher, dass Sie auch das JS/CSS von Bootstrap in Ihr Projekt einbinden, um eine korrekte Anzeige von AvalynxSelect zu gewährleisten.
 
 ## Verwendung
 
-Um ein Select-Dropdown zu erstellen, instanziieren Sie einfach ein neues `AvalynxSelect`-Objekt mit den gewünschten Optionen:
+Um ein Autocomplete-Feld zu erstellen, instanziieren Sie einfach ein neues `AvalynxAutocomplete`-Objekt mit den gewünschten Optionen:
 
 ```javascript
-new AvalynxSelect("#mySelect", {
-  liveSearch: true,
-  caseSensitive: false,
-  showAll: true,
-  scrollList: true,
-  scrollItems: 8
+new AvalynxAutocomplete("#myAutocomplete", {
+  data: [
+    { key: '1', value: 'Option 1' },
+    { key: '2', value: 'Option 2' },
+    { key: '3', value: 'Option 3' }
+  ],
+  maxItems: 10,
+  minLength: 2
 }, {
-  searchPlaceholder: 'Suchen...',
-  selectPlaceholder: 'Bitte wählen...'
+  placeholder: 'Suchen...',
+  noResults: 'Keine Ergebnisse gefunden'
 });
 ```
 
-Für AJAX-Unterstützung:
+Für die Verwendung mit einer API (`fetchData`):
 
 ```javascript
-new AvalynxSelect("#myAjaxSelect", {
-  ajax: {
-    url: 'https://api.example.com/data',
-    method: 'GET',
-    minimumInputLength: 3
-  }
+new AvalynxAutocomplete("#myAjaxAutocomplete", {
+  fetchData: async (query) => {
+    const response = await fetch(`https://api.example.com/search?q=${query}`);
+    const data = await response.json();
+    return data.map(item => ({ key: item.id, value: item.name }));
+  },
+  minLength: 3
 });
 ```
 
 ## Optionen
 
-AvalynxSelect erlaubt die folgenden Optionen zur Anpassung:
+AvalynxAutocomplete erlaubt die folgenden Optionen zur Anpassung:
 
-- `selector`: (string) Der Selektor, der zum Anvisieren von Select-Elementen im DOM verwendet wird (Standard: `'.avalynx-select'`).
+- `selector`: (string) Der Selektor für die Eingabeelemente (Standard: `'.avalynx-autocomplete'`).
 - `options`: Ein Objekt, das die folgenden Schlüssel enthält:
-    - `className`: (string) Ein benutzerdefinierter Klassenname für das Loader-Element (Standard: `''`).
-    - `liveSearch`: (boolean) Live-Suche aktivieren (Standard: `false`).
-    - `caseSensitive`: (boolean) Suche mit Beachtung der Groß-/Kleinschreibung aktivieren (Standard: `false`).
-    - `showAll`: (boolean) Alle Optionen anzeigen, wenn der Suchbegriff leer ist (Standard: `true`).
-    - `showActive`: (boolean) Die aktive Option im Dropdown anzeigen (Standard: `true`).
-    - `scrollList`: (boolean) Scrollbare Liste aktivieren (Standard: `true`).
-    - `scrollItems`: (number) Anzahl der anzuzeigenden Elemente vor dem Scrollen (Standard: `8`).
-    - `maxItemsToShow`: (number|null) Begrenzung der Anzahl der gerenderten Elemente (Standard: `null`).
-    - `noDefaultSelection`: (boolean) Standardmäßig keine Option auswählen (Standard: `false`).
-    - `disabled`: (boolean) Das Select-Element als deaktiviert initialisieren (Standard: `false`).
-    - `defaultValue`: (string|null) Der Standardwert, der bei der Initialisierung ausgewählt werden soll (Standard: `null`).
-    - `ajax`: (object|null) Konfiguration für die AJAX-Datenquelle (Standard: `null`).
-        - `url`: (string) URL für die AJAX-Anfrage (Standard: `''`).
-        - `method`: (string) HTTP-Methode für die AJAX-Anfrage (Standard: `'GET'`).
-        - `headers`: (object) Benutzerdefinierte Header für die AJAX-Anfrage (Standard: `{}`).
-        - `debounce`: (number) Debounce-Zeit in Millisekunden (Standard: `250`).
-        - `minimumInputLength`: (number) Mindestanzahl von Zeichen vor der AJAX-Anfrage (Standard: `0`).
-        - `length`: (number) Anzahl der abzurufenden Elemente (Standard: `25`).
-        - `start`: (number) Startindex für das Abrufen von Elementen (Standard: `0`).
-        - `initialLoad`: (boolean) Initiale Daten über AJAX laden (Standard: `false`).
-        - `mapRequest`: (function|null) Funktion zum Mappen von Anfrageparametern (Standard: `null`).
-        - `mapResponse`: (function|null) Funktion zum Mappen von Antwortdaten (Standard: `null`).
-        - `resolveByValue`: (function|null) Funktion zum Auflösen eines Wertes in ein Label (Standard: `null`).
-    - `onChange`: (function) Callback-Funktion, die ausgeführt wird, wenn eine Option ausgewählt wird (Standard: `null`).
-    - `onLoaded`: (function) Callback-Funktion, die ausgeführt wird, wenn die Komponente geladen ist (Standard: `null`).
+    - `className`: (string) Zusätzliche CSS-Klassen für das Dropdown (Standard: `''`).
+    - `maxItems`: (number) Maximale Anzahl der im Dropdown angezeigten Ergebnisse (Standard: `5`).
+    - `maxSelections`: (number) Maximale Anzahl der auswählbaren Elemente. Bei > 1 wird der Multi-Select-Modus aktiviert (Standard: `1`).
+    - `minLength`: (number) Mindestanzahl an Zeichen für den Start der Suche (Standard: `1`).
+    - `debounce`: (number) Verzögerung in Millisekunden nach der letzten Tastatureingabe (Standard: `300`).
+    - `caseSensitive`: (boolean) Suche mit Beachtung der Groß-/Kleinschreibung (Standard: `false`).
+    - `disabled`: (boolean) Initialisierung im deaktivierten Zustand (Standard: `false`).
+    - `defaultValue`: (string|null) Standardwert (Label) bei Initialisierung (Standard: `null`).
+    - `defaultKey`: (string|null) Standardschlüssel bei Initialisierung (Standard: `null`).
+    - `defaultSelections`: (array|null) Array von Objekten `{key, value}` für Multi-Select-Standardwerte (Standard: `null`).
+    - `tagsPosition`: (string) Position der Tags bei Multi-Select (`'above'` oder `'inline'`) (Standard: `'above'`).
+    - `clearStyle`: (string) Stil des Lösch-Buttons (`'button'` oder `'icon'`) (Standard: `'button'`).
+    - `data`: (array|null) Statisches Array von Datenobjekten `{key, value}` (Standard: `null`).
+    - `fetchData`: (function|null) Asynchrone Funktion zum Abrufen von Daten (Standard: `null`).
+    - `onChange`: (function) Callback bei Änderung der Auswahl (Standard: `null`).
+    - `onClear`: (function) Callback beim Leeren des Feldes (Standard: `null`).
+    - `onLoaded`: (function) Callback nach Initialisierung der Komponente (Standard: `null`).
 - `language`: Ein Objekt, das die folgenden Schlüssel enthält:
-    - `searchPlaceholder`: (string) Platzhaltertext für die Sucheingabe (Standard: `'Suchen...'`).
-    - `selectPlaceholder`: (string) Platzhaltertext für das Select-Dropdown (Standard: `'Bitte wählen...'`).
-    - `loading`: (string) Text, der beim Laden von Daten angezeigt wird (Standard: `'Wird geladen...'`).
-    - `noResults`: (string) Text, der angezeigt wird, wenn keine Ergebnisse gefunden wurden (Standard: `'Keine Ergebnisse'`).
-    - `error`: (string) Text, der angezeigt wird, wenn ein Fehler auftritt (Standard: `'Fehler beim Laden der Daten'`).
-    - `typeMore`: (string) Text, der für die Mindesteingabeanforderung angezeigt wird (Standard: `'Bitte noch {remaining} weitere Zeichen eingeben...'`).
-    - `idleHint`: (string) Hinweistext, wenn das Sucheingabefeld leer ist (Standard: `'Zum Suchen tippen'`).
+    - `placeholder`: (string) Platzhaltertext für das Eingabefeld (Standard: `'Search...'`).
+    - `noResults`: (string) Text bei fehlenden Ergebnissen (Standard: `'No results found'`).
+    - `clearTitle`: (string) Titel-Attribut für den Lösch-Button (Standard: `'Clear selection'`).
+    - `removeTitle`: (string) Titel-Attribut zum Entfernen eines Tags (Standard: `'Remove'`).
 
 ## Mitwirken
 
@@ -197,10 +192,10 @@ Bevor Sie Ihren Pull-Request einreichen, stellen Sie bitte sicher, dass Ihre Än
 
 ## Lizenz
 
-AvalynxSelect ist Open-Source-Software, die unter der [MIT-Lizenz](LICENSE) lizenziert ist.
+AvalynxAutocomplete ist Open-Source-Software, die unter der [MIT-Lizenz](LICENSE) lizenziert ist.
 
 ## Kontakt
 
-Wenn Sie Fragen, Funktionswünsche oder Probleme haben, öffnen Sie bitte ein Issue in unserem [GitHub-Repository](https://github.com/avalynx/avalynx-select/issues) oder senden Sie einen Pull-Request.
+Wenn Sie Fragen, Funktionswünsche oder Probleme haben, öffnen Sie bitte ein Issue in unserem [GitHub-Repository](https://github.com/avalynx/avalynx-autocomplete/issues) oder senden Sie einen Pull-Request.
 
-Vielen Dank, dass Sie AvalynxSelect für Ihr Projekt in Betracht ziehen!
+Vielen Dank, dass Sie AvalynxAutocomplete für Ihr Projekt in Betracht ziehen!

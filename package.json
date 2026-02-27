@@ -2,11 +2,13 @@
   "name": "avalynx-autocomplete",
   "title": "AvalynxAutocomplete",
   "description": "AvalynxAutocomplete is a lightweight, customizable autocomplete component for web applications. It is designed to be used with Bootstrap version 5.3 or higher and does not require any framework dependencies.",
-  "version": "1.2.1",
+  "version": "1.0.0",
   "license": "MIT",
   "main": "dist/js/avalynx-autocomplete.js",
   "module": "dist/js/avalynx-autocomplete.esm.js",
+  "style": "dist/css/avalynx-autocomplete.css",
   "files": [
+    "dist/css/avalynx-autocomplete.css",
     "dist/js/avalynx-autocomplete.js",
     "dist/js/avalynx-autocomplete.esm.js"
   ],
@@ -36,7 +38,7 @@
   },
   "scripts": {
     "test": "jest",
-    "build": "shx rm -rf dist; shx mkdir -p dist/js/; shx cp src/js/avalynx-autocomplete.js dist/js/avalynx-autocomplete.js; shx cp src/js/avalynx-autocomplete.js dist/js/avalynx-autocomplete.esm.js; node build.js dist/js/avalynx-autocomplete.esm.js"
+    "build": "shx rm -rf dist; shx mkdir -p dist/js/; shx cp src/js/avalynx-autocomplete.js dist/js/avalynx-autocomplete.js; shx cp src/js/avalynx-autocomplete.js dist/js/avalynx-autocomplete.esm.js; node build.js dist/js/avalynx-autocomplete.esm.js; shx mkdir -p dist/css/; shx cp src/css/avalynx-autocomplete.css dist/css/avalynx-autocomplete.css"
   },
   "dependencies": {
     "bootstrap": ">=5.3"

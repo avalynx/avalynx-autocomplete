@@ -1,0 +1,78 @@
+/**
+ * AvalynxAutocomplete
+ *
+ * AvalynxAutocomplete is a lightweight, customizable autocomplete component for web applications. It is designed to be used with Bootstrap version 5.3 or higher and does not require any framework dependencies.
+ *
+ * @version 1.0.0
+ * @license MIT
+ * @author https://github.com/avalynx/avalynx-autocomplete/graphs/contributors
+ * @website https://github.com/avalynx/
+ * @repository https://github.com/avalynx/avalynx-autocomplete.git
+ * @bugs https://github.com/avalynx/avalynx-autocomplete/issues
+ */
+
+.avalynx-autocomplete-wrapper {
+    width: 100%;
+}
+.avalynx-autocomplete-dropdown {
+    top: 100%;
+    left: 0;
+    margin-top: 2px;
+    border-radius: 0.375rem;
+}
+.avalynx-autocomplete-item {
+    cursor: pointer;
+    transition: background-color 0.15s ease-in-out;
+}
+.avalynx-autocomplete-item:hover,
+.avalynx-autocomplete-item.active {
+    background-color: var(--bs-primary);
+    color: var(--bs-white);
+}
+.avalynx-autocomplete-tags .badge {
+    font-size: 0.875rem;
+    padding: 0.5em 0.75em;
+}
+.avalynx-autocomplete-input-container {
+    min-height: 38px;
+}
+.avalynx-autocomplete-input-container:focus-within {
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+.avalynx-autocomplete-inline-input {
+    min-width: 80px;
+    border: none !important;
+    padding: 0 !important;
+    outline: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+}
+.avalynx-autocomplete-inline-input:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+.avalynx-autocomplete-clear-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #6c757d;
+    font-size: 1.1rem;
+    line-height: 1;
+    padding: 2px 6px;
+    border-radius: 3px;
+    transition: color 0.15s, background-color 0.15s;
+    z-index: 10;
+}
+.avalynx-autocomplete-clear-icon:hover {
+    color: #dc3545;
+    background-color: rgba(220, 53, 69, 0.1);
+}
+.avalynx-autocomplete-input-with-icon {
+    padding-right: 35px !important;
+}
+.avalynx-autocomplete-container-with-icon {
+    padding-right: 35px !important;
+}

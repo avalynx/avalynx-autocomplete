@@ -29,12 +29,16 @@
 
 <div class="container py-5">
 
-	<a class="btn btn-secondary float-end m-3" href=".">Back</a> <button id="modeToggle" class="btn btn-primary float-end m-3">Toggle to Dark Mode</button>
+    <a class="btn btn-secondary float-end m-3" href=".">Back</a> <button id="modeToggle" class="btn btn-primary float-end m-3">Toggle to Dark Mode</button>
+
+    <br/>
+    <br/>
+    <br/>
+    <br/>
 
 	<div class="alert alert-info">
 		This is an all-in-one example of the AvalynxAutocomplete. It demonstrates various selection modes and styles. Data is fetched from a local array or a PHP script.
 	</div>
-
 
 	<div class="container py-5">
 		<div class="row justify-content-center">
@@ -336,109 +340,150 @@
 
 	</script>
 
-	<br/>
-	<h3>Source of example<a class="p-1 float-end btn btn-secondary btn-small copy-button" data-copy-target="codeBlock">Copy to clipboard</a></h3>
-	<pre><code class="language-javascript" id="codeBlock">
-// ========== SINGLE SELECT ==========
+    <br/>
 
+    <!-- ========= COPY BLOCKS PER EXAMPLE ========= -->
+
+    <h3>Source: Product (Single-select, Clear Button)
+        <a class="p-1 float-end btn btn-secondary btn-small copy-button" data-copy-target="codeProduct">Copy to clipboard</a>
+    </h3>
+    <pre><code class="language-javascript" id="codeProduct">
 // Single + Button (default)
 const productAutocomplete = new AvalynxAutocomplete('.avalynx-autocomplete', {
-    fetchData: async (query) => {
-        const response = await fetch('php/result.php?type=products&search=' + encodeURIComponent(query));
-        return await response.json();
-    },
-    maxItems: 5,
-    clearStyle: 'button',
-    onChange: (key, value) => console.log('Product:', key, value)
+  fetchData: async (query) => {
+    const response = await fetch('php/result.php?type=products&search=' + encodeURIComponent(query));
+    return await response.json();
+  },
+  maxItems: 5,
+  clearStyle: 'button',
+  onChange: (key, value) => console.log('Product:', key, value)
 }, {
-    placeholder: 'Search product...',
-    noResults: 'No products found'
+  placeholder: 'Search product...',
+  noResults: 'No products found'
 });
+</code></pre>
 
+    <br/>
+
+    <h3>Source: User (Single-select, Clear Icon)
+        <a class="p-1 float-end btn btn-secondary btn-small copy-button" data-copy-target="codeUser">Copy to clipboard</a>
+    </h3>
+    <pre><code class="language-javascript" id="codeUser">
 // Single + Icon
 const userAutocomplete = new AvalynxAutocomplete('.user-autocomplete', {
-    fetchData: async (query) => {
-        const response = await fetch('php/result.php?type=users&search=' + encodeURIComponent(query));
-        return await response.json();
-    },
-    clearStyle: 'icon',
-    onChange: (key, value) => console.log('User:', key, value)
+  fetchData: async (query) => {
+    const response = await fetch('php/result.php?type=users&search=' + encodeURIComponent(query));
+    return await response.json();
+  },
+  clearStyle: 'icon',
+  onChange: (key, value) => console.log('User:', key, value)
 }, {
-    placeholder: 'Search user...',
-    noResults: 'No users found'
+  placeholder: 'Search user...',
+  noResults: 'No users found'
 });
+</code></pre>
 
+    <br/>
+
+    <h3>Source: Category (Single-select, Pre-selected, Icon)
+        <a class="p-1 float-end btn btn-secondary btn-small copy-button" data-copy-target="codeCategory">Copy to clipboard</a>
+    </h3>
+    <pre><code class="language-javascript" id="codeCategory">
 // Single + Icon + Pre-selected
 const categoryAutocomplete = new AvalynxAutocomplete('.category-autocomplete', {
-    data: categories,
-    clearStyle: 'icon',
-    onChange: (key, value) => console.log('Category:', key, value)
+  data: categories,
+  clearStyle: 'icon',
+  onChange: (key, value) => console.log('Category:', key, value)
 });
+</code></pre>
 
-// ========== MULTI SELECT: TAGS ABOVE ==========
+    <br/>
 
+    <h3>Source: Tags (Multi-select, Tags above, Clear Button)
+        <a class="p-1 float-end btn btn-secondary btn-small copy-button" data-copy-target="codeTags">Copy to clipboard</a>
+    </h3>
+    <pre><code class="language-javascript" id="codeTags">
 // Tags above + Button
 const tagAutocomplete = new AvalynxAutocomplete('.tag-autocomplete', {
-    data: tags,
-    maxSelections: 3,
-    tagsPosition: 'above',
-    clearStyle: 'button',
-    onChange: (keys, values) => console.log('Tags:', keys, values)
+  data: tags,
+  maxSelections: 3,
+  tagsPosition: 'above',
+  clearStyle: 'button',
+  onChange: (keys, values) => console.log('Tags:', keys, values)
 }, {
-    placeholder: 'Add tags (max. 3)...',
-    noResults: 'No tags found',
-    removeTitle: 'Remove'
+  placeholder: 'Add tags (max. 3)...',
+  noResults: 'No tags found',
+  removeTitle: 'Remove'
 });
+</code></pre>
 
+    <br/>
+
+    <h3>Source: Priorities (Multi-select, Tags above, Clear Icon, Pre-selected)
+        <a class="p-1 float-end btn btn-secondary btn-small copy-button" data-copy-target="codePriorities">Copy to clipboard</a>
+    </h3>
+    <pre><code class="language-javascript" id="codePriorities">
 // Tags above + Icon + Pre-selected
 const priorityAutocomplete = new AvalynxAutocomplete('.priority-autocomplete', {
-    data: priorities,
-    maxSelections: 4,
-    tagsPosition: 'above',
-    clearStyle: 'icon',
-    defaultSelections: [
-        { key: 'PRI001', value: 'Critical' },
-        { key: 'PRI002', value: 'High' }
-    ],
-    onChange: (keys, values) => console.log('Priorities:', keys, values)
+  data: priorities,
+  maxSelections: 4,
+  tagsPosition: 'above',
+  clearStyle: 'icon',
+  defaultSelections: [
+    { key: 'PRI001', value: 'Critical' },
+    { key: 'PRI002', value: 'High' }
+  ],
+  onChange: (keys, values) => console.log('Priorities:', keys, values)
 }, {
-    placeholder: 'Add priorities (max. 4)...',
-    noResults: 'No priorities found',
-    removeTitle: 'Remove'
+  placeholder: 'Add priorities (max. 4)...',
+  noResults: 'No priorities found',
+  removeTitle: 'Remove'
 });
+</code></pre>
 
-// ========== MULTI SELECT: TAGS INLINE ==========
+    <br/>
 
+    <h3>Source: Skills (Multi-select, Tags inline, Clear Button)
+        <a class="p-1 float-end btn btn-secondary btn-small copy-button" data-copy-target="codeSkills">Copy to clipboard</a>
+    </h3>
+    <pre><code class="language-javascript" id="codeSkills">
 // Tags inline + Button
 const skillAutocomplete = new AvalynxAutocomplete('.skill-autocomplete', {
-    data: skills,
-    maxSelections: 5,
-    tagsPosition: 'inline',
-    clearStyle: 'button',
-    onChange: (keys, values) => console.log('Skills:', keys, values)
+  data: skills,
+  maxSelections: 5,
+  tagsPosition: 'inline',
+  clearStyle: 'button',
+  onChange: (keys, values) => console.log('Skills:', keys, values)
 }, {
-    placeholder: 'Add skills (max. 5)...',
-    noResults: 'No skills found',
-    removeTitle: 'Remove'
+  placeholder: 'Add skills (max. 5)...',
+  noResults: 'No skills found',
+  removeTitle: 'Remove'
 });
+</code></pre>
 
+    <br/>
+
+    <h3>Source: Languages (Multi-select, Tags inline, Clear Icon, Pre-selected)
+        <a class="p-1 float-end btn btn-secondary btn-small copy-button" data-copy-target="codeLanguages">Copy to clipboard</a>
+    </h3>
+    <pre><code class="language-javascript" id="codeLanguages">
 // Tags inline + Icon + Pre-selected
 const languageAutocomplete = new AvalynxAutocomplete('.language-autocomplete', {
-    data: languages,
-    maxSelections: 5,
-    tagsPosition: 'inline',
-    clearStyle: 'icon',
-    defaultSelections: [
-        { key: 'LNG001', value: 'German' },
-        { key: 'LNG002', value: 'English' }
-    ],
-    onChange: (keys, values) => console.log('Languages:', keys, values)
+  data: languages,
+  maxSelections: 5,
+  tagsPosition: 'inline',
+  clearStyle: 'icon',
+  defaultSelections: [
+    { key: 'LNG001', value: 'German' },
+    { key: 'LNG002', value: 'English' }
+  ],
+  onChange: (keys, values) => console.log('Languages:', keys, values)
 }, {
-    placeholder: 'Add languages (max. 5)...',
-    noResults: 'No languages found',
-    removeTitle: 'Remove'
+  placeholder: 'Add languages (max. 5)...',
+  noResults: 'No languages found',
+  removeTitle: 'Remove'
 });
-	</code></pre>
+</code></pre>
 
 	<a href="https://github.com/avalynx/avalynx-autocomplete" target="_blank" class="btn btn-primary">AvalynxAutocomplete on GitHub</a> <a href="https://github.com/avalynx/" target="_blank" class="btn btn-primary">Avalynx on GitHub</a>
 
