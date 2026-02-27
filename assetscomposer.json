@@ -1,0 +1,10 @@
+{
+  "name": "avalynx/avalynx-autocomplete",
+  "files": [
+    "dist/js/avalynx-autocomplete.esm.js",
+    "dist/js/avalynx-autocomplete.js"
+  ],
+  "files-dev": [
+    "src/js/avalynx-autocomplete.js"
+  ]
+}

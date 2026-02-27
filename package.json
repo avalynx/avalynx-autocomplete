@@ -1,0 +1,55 @@
+{
+  "name": "avalynx-autocomplete",
+  "title": "AvalynxAutocomplete",
+  "description": "AvalynxAutocomplete is a lightweight, customizable autocomplete component for web applications. It is designed to be used with Bootstrap version 5.3 or higher and does not require any framework dependencies.",
+  "version": "1.0.0",
+  "license": "MIT",
+  "main": "dist/js/avalynx-autocomplete.js",
+  "module": "dist/js/avalynx-autocomplete.esm.js",
+  "style": "dist/css/avalynx-autocomplete.css",
+  "files": [
+    "dist/css/avalynx-autocomplete.css",
+    "dist/js/avalynx-autocomplete.js",
+    "dist/js/avalynx-autocomplete.esm.js"
+  ],
+  "keywords": [
+    "avalynx",
+    "autocomplete",
+    "dropdown",
+    "bootstrap",
+    "bootstrap5",
+    "livesearch",
+    "component"
+  ],
+  "ignore": [
+    "package.json"
+  ],
+  "author": {
+    "name": "Juergen Schwind an the AvalynxAutocomplete Authors",
+    "url": "https://github.com/avalynx/avalynx-autocomplete/graphs/contributors"
+  },
+  "homepage": "https://github.com/avalynx/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/avalynx/avalynx-autocomplete.git"
+  },
+  "bugs": {
+    "url": "https://github.com/avalynx/avalynx-autocomplete/issues"
+  },
+  "scripts": {
+    "test": "jest",
+    "build": "shx rm -rf dist; shx mkdir -p dist/js/; shx cp src/js/avalynx-autocomplete.js dist/js/avalynx-autocomplete.js; shx cp src/js/avalynx-autocomplete.js dist/js/avalynx-autocomplete.esm.js; node build.js dist/js/avalynx-autocomplete.esm.js; shx mkdir -p dist/css/; shx cp src/css/avalynx-autocomplete.css dist/css/avalynx-autocomplete.css"
+  },
+  "dependencies": {
+    "bootstrap": ">=5.3"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.29.0",
+    "@babel/preset-env": "^7.29.0",
+    "babel-jest": "^30.2.0",
+    "jest": "^30.2.0",
+    "jest-environment-jsdom": "^30.2.0",
+    "shelljs": "^0.10.0",
+    "shx": "^0.4.0"
+  }
+}
