@@ -63,8 +63,8 @@ Replace `path/to/` with the actual path to the file in your project.
 AvalynxAutocomplete is also available via [jsDelivr](https://www.jsdelivr.com/). You can include it in your project like this:
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/avalynx-autocomplete@1.0.1/dist/css/avalynx-autocomplete.css">
-<script src="https://cdn.jsdelivr.net/npm/avalynx-autocomplete@1.0.1/dist/js/avalynx-autocomplete.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/avalynx-autocomplete@1.0.3/dist/css/avalynx-autocomplete.css">
+<script src="https://cdn.jsdelivr.net/npm/avalynx-autocomplete@1.0.3/dist/js/avalynx-autocomplete.js"></script>
 ```
 
 Make sure to also include Bootstrap's JS/CSS in your project.

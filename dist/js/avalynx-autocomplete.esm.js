@@ -3,7 +3,7 @@
  *
  * AvalynxAutocomplete is a lightweight, customizable autocomplete component for web applications. It is designed to be used with Bootstrap version 5.3 or higher and does not require any framework dependencies.
  *
- * @version 1.0.2
+ * @version 1.0.3
  * @license MIT
  * @author https://github.com/avalynx/avalynx-autocomplete/graphs/contributors
  * @website https://github.com/avalynx/
