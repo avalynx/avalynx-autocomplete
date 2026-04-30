@@ -15,6 +15,7 @@ AvalynxAutocomplete ist eine leichtgewichtige, anpassbare Autocomplete-Komponent
 - **Anpassbare Autocomplete-Eingaben**: Unterstützt verschiedene Anpassungsoptionen wie Single- und Multi-Select, Case-Sensitivity, Mindestlänge für die Suche und Debouncing.
 - **Flexible Datenquellen**: Unterstützung für statische Daten oder dynamisches Laden über eine benutzerdefinierte `fetchData`-Funktion.
 - **Multi-Select-Unterstützung**: Verwaltung von mehreren Auswahlen mit Tags, die entweder oberhalb oder inline im Eingabefeld angezeigt werden können.
+- **Optionale Erstellung neuer Einträge**: Benutzer können neue Einträge aus dem eingegebenen Text per sichtbarer Dropdown-Aktion oder mit einem konfigurierbaren Shortcut wie `Enter`, `Ctrl+Enter` oder `Mod+Enter` anlegen.
 - **Bootstrap-Integration**: Entwickelt für die nahtlose Integration mit Bootstrap >= 5.3.
 - **Einfach zu bedienen**: Einfache API zum Erstellen und Verwalten von Autocomplete-Feldern in Ihren Webanwendungen.
 
@@ -151,6 +152,26 @@ new AvalynxAutocomplete("#myAjaxAutocomplete", {
 });
 ```
 
+Um neue Einträge direkt aus dem eingegebenen Text zu erzeugen:
+
+```javascript
+new AvalynxAutocomplete("#myTagAutocomplete", {
+  data: [
+    { key: '1', value: 'JavaScript' },
+    { key: '2', value: 'TypeScript' }
+  ],
+  maxSelections: 5,
+  allowCreate: true,
+  createShortcut: 'Mod+Enter',
+  createItem: (value) => ({
+    key: value.toLowerCase().replace(/\s+/g, '-'),
+    value
+  })
+});
+```
+
+Wenn der aktuelle Text keinem bestehenden Eintrag exakt entspricht, zeigt das Dropdown außerdem eine klickbare **Create "..."**-Option an.
+
 ## Optionen
 
 AvalynxAutocomplete erlaubt die folgenden Optionen zur Anpassung:
@@ -171,6 +192,9 @@ AvalynxAutocomplete erlaubt die folgenden Optionen zur Anpassung:
     - `clearStyle`: (string) Stil des Lösch-Buttons (`'button'` oder `'icon'`) (Standard: `'button'`).
     - `data`: (array|null) Statisches Array von Datenobjekten `{key, value}` (Standard: `null`).
     - `fetchData`: (function|null) Asynchrone Funktion zum Abrufen von Daten (Standard: `null`).
+    - `allowCreate`: (boolean) Erlaubt das Erstellen neuer Einträge aus dem aktuellen Eingabewert (Standard: `false`).
+    - `createShortcut`: (string) Tastenkürzel zum Erstellen eines neuen Eintrags, z. B. `'Enter'`, `'Ctrl+Enter'` oder `'Mod+Enter'` (`Mod` entspricht Ctrl/Cmd) (Standard: `'Enter'`).
+    - `createItem`: (function|null) Wandelt den eingegebenen Text beim Erstellen in ein `{key, value}`-Objekt um. Ohne Callback wird der Text für beide Felder verwendet (Standard: `null`).
     - `onChange`: (function) Callback bei Änderung der Auswahl (Standard: `null`).
     - `onClear`: (function) Callback beim Leeren des Feldes (Standard: `null`).
     - `onLoaded`: (function) Callback nach Initialisierung der Komponente (Standard: `null`).
@@ -178,6 +202,7 @@ AvalynxAutocomplete erlaubt die folgenden Optionen zur Anpassung:
     - `placeholder`: (string) Platzhaltertext für das Eingabefeld (Standard: `'Search...'`).
     - `noResults`: (string) Text bei fehlenden Ergebnissen (Standard: `'No results found'`).
     - `clearTitle`: (string) Titel-Attribut für den Lösch-Button (Standard: `'Clear selection'`).
+    - `createOption`: (function) Formatter für die Beschriftung der Erstellen-Aktion `(value, shortcut) => string` (Standard: `Create "{value}" ({shortcut})`).
     - `removeTitle`: (string) Titel-Attribut zum Entfernen eines Tags (Standard: `'Remove'`).
 
 ## Mitwirken

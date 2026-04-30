@@ -64,6 +64,9 @@ export class AvalynxAutocomplete {
             clearStyle: 'button',    // 'button' | 'icon'
             data: null,
             fetchData: null,
+            allowCreate: false,
+            createShortcut: 'Enter',
+            createItem: null,
             onChange: null,
             onClear: null,
             onLoaded: null,
@@ -73,11 +76,13 @@ export class AvalynxAutocomplete {
         this.language = {
             placeholder: 'Search...',
             noResults: 'No results found',
+            createOption: (value, shortcut) => `Create "${value}"${shortcut ? ` (${shortcut})` : ''}`,
             clearTitle: 'Clear selection',
             removeTitle: 'Remove',
             ...language
         };
 
+        this.createShortcut = this.normalizeCreateShortcut(this.options.createShortcut);
         this.instances = [];
         this.initialized = false;
         this.elements.forEach(input => this.init(input));
@@ -98,7 +103,8 @@ export class AvalynxAutocomplete {
             inputWrapper: null,
             debounceTimer: null,
             isSelected: false,
-            selections: []
+            selections: [],
+            createdItems: []
         };
         this.createElements(instance);
         this.bindEvents(instance);
@@ -226,6 +232,12 @@ export class AvalynxAutocomplete {
             const item = e.target.closest('.avalynx-autocomplete-item');
             if (item && item.dataset.key) {
                 this.selectItem(instance, item.dataset.key, item.dataset.value);
+                return;
+            }
+
+            const createItem = e.target.closest('.avalynx-autocomplete-create-item');
+            if (createItem) {
+                this.createSelectionFromInput(instance);
             }
         });
 
@@ -249,11 +261,12 @@ export class AvalynxAutocomplete {
             return;
         }
         const results = await this.search(query, instance);
-        this.renderDropdown(instance, results);
+        this.renderDropdown(instance, results, query);
     }
 
     async search(query, instance) {
         let results = [];
+        const createdItems = this.filterMatchingItems(instance.createdItems, query);
 
         if (this.options.fetchData) {
             try {
@@ -263,12 +276,10 @@ export class AvalynxAutocomplete {
                 return [];
             }
         } else if (this.options.data && Array.isArray(this.options.data)) {
-            const searchTerm = this.options.caseSensitive ? query : query.toLowerCase();
-            results = this.options.data.filter(item => {
-                const value = this.options.caseSensitive ? item.value : item.value.toLowerCase();
-                return value.includes(searchTerm);
-            });
+            results = this.filterMatchingItems(this.options.data, query);
         }
+
+        results = this.mergeUniqueItems([...createdItems, ...results]);
 
         if (this.options.maxSelections > 1) {
             const selectedKeys = instance.selections.map(s => s.key);
@@ -278,9 +289,47 @@ export class AvalynxAutocomplete {
         return results.slice(0, this.options.maxItems);
     }
 
-    renderDropdown(instance, results) {
+    formatCreateShortcutLabel() {
+        if (!this.createShortcut) return '';
+
+        const parts = [];
+        if (this.createShortcut.modKey) {
+            parts.push('Ctrl/Cmd');
+        } else {
+            if (this.createShortcut.ctrlKey) parts.push('Ctrl');
+            if (this.createShortcut.metaKey) parts.push('Cmd');
+        }
+        if (this.createShortcut.altKey) parts.push('Alt');
+        if (this.createShortcut.shiftKey) parts.push('Shift');
+        parts.push(this.createShortcut.key.length === 1
+            ? this.createShortcut.key.toUpperCase()
+            : this.createShortcut.key.charAt(0).toUpperCase() + this.createShortcut.key.slice(1));
+
+        return parts.join('+');
+    }
+
+    shouldShowCreateOption(instance, query, results) {
+        if (!this.options.allowCreate || query.trim() === '') return false;
+
+        const existingItem = this.getExistingItemByValue(instance, query);
+        if (existingItem) {
+            if (this.options.maxSelections > 1) {
+                return !instance.selections.some(selection => selection.key === existingItem.key);
+            }
+            return false;
+        }
+
+        return !results.some(item => {
+            const itemValue = this.options.caseSensitive ? item.value : item.value.toLowerCase();
+            const queryValue = this.options.caseSensitive ? query : query.toLowerCase();
+            return itemValue === queryValue;
+        });
+    }
+
+    renderDropdown(instance, results, query = '') {
         const { dropdown } = instance;
         dropdown.innerHTML = '';
+        const showCreateOption = this.shouldShowCreateOption(instance, query, results);
 
         if (results.length === 0) {
             const noResults = document.createElement('li');
@@ -299,6 +348,20 @@ export class AvalynxAutocomplete {
                 dropdown.appendChild(li);
             });
         }
+
+        if (showCreateOption) {
+            const createOption = document.createElement('li');
+            createOption.classList.add(
+                'list-group-item',
+                'list-group-item-action',
+                'avalynx-autocomplete-create-item',
+                'text-primary'
+            );
+            createOption.setAttribute('role', 'button');
+            createOption.textContent = this.language.createOption(query, this.formatCreateShortcutLabel());
+            dropdown.appendChild(createOption);
+        }
+
         dropdown.classList.remove('d-none');
     }
 
@@ -447,11 +510,166 @@ export class AvalynxAutocomplete {
         if (this.initialized && this.options.onClear) this.options.onClear();
     }
 
+    normalizeCreateShortcut(shortcut) {
+        if (typeof shortcut !== 'string' || shortcut.trim() === '') {
+            console.error('AvalynxAutocomplete: createShortcut must be a non-empty string');
+            return null;
+        }
+
+        const parts = shortcut.split('+').map(part => part.trim().toLowerCase()).filter(Boolean);
+        const key = parts.pop();
+
+        if (!key) {
+            console.error('AvalynxAutocomplete: createShortcut must include a key');
+            return null;
+        }
+
+        const normalized = {
+            key,
+            modKey: false,
+            ctrlKey: false,
+            altKey: false,
+            shiftKey: false,
+            metaKey: false
+        };
+
+        for (const modifier of parts) {
+            switch (modifier) {
+                case 'ctrl':
+                case 'control':
+                    normalized.ctrlKey = true;
+                    break;
+                case 'mod':
+                    normalized.modKey = true;
+                    break;
+                case 'alt':
+                    normalized.altKey = true;
+                    break;
+                case 'shift':
+                    normalized.shiftKey = true;
+                    break;
+                case 'meta':
+                case 'cmd':
+                case 'command':
+                    normalized.metaKey = true;
+                    break;
+                default:
+                    console.error(`AvalynxAutocomplete: Unsupported createShortcut modifier '${modifier}'`);
+                    return null;
+            }
+        }
+
+        return normalized;
+    }
+
+    matchesCreateShortcut(e) {
+        if (!this.options.allowCreate || !this.createShortcut) return false;
+
+        const ctrlKey = !!e.ctrlKey;
+        const metaKey = !!e.metaKey;
+        const primaryModifierMatches = this.createShortcut.modKey
+            ? (ctrlKey || metaKey)
+            : ctrlKey === this.createShortcut.ctrlKey && metaKey === this.createShortcut.metaKey;
+
+        return e.key.toLowerCase() === this.createShortcut.key &&
+            primaryModifierMatches &&
+            !!e.altKey === this.createShortcut.altKey &&
+            !!e.shiftKey === this.createShortcut.shiftKey &&
+            (!this.createShortcut.modKey || (!this.createShortcut.ctrlKey && !this.createShortcut.metaKey));
+    }
+
+    filterMatchingItems(items, query) {
+        if (!Array.isArray(items)) return [];
+
+        const searchTerm = this.options.caseSensitive ? query : query.toLowerCase();
+        return items.filter(item => {
+            if (!item || typeof item.value !== 'string') return false;
+            const value = this.options.caseSensitive ? item.value : item.value.toLowerCase();
+            return value.includes(searchTerm);
+        });
+    }
+
+    mergeUniqueItems(items) {
+        const seenKeys = new Set();
+
+        return items.filter(item => {
+            if (!item || item.key == null || item.value == null) return false;
+            if (seenKeys.has(item.key)) return false;
+            seenKeys.add(item.key);
+            return true;
+        });
+    }
+
+    getExistingItemByValue(instance, value) {
+        const normalizedValue = this.options.caseSensitive ? value : value.toLowerCase();
+
+        return this.mergeUniqueItems([
+            ...instance.createdItems,
+            ...(Array.isArray(this.options.data) ? this.options.data : [])
+        ]).find(item => {
+            const itemValue = this.options.caseSensitive ? item.value : item.value.toLowerCase();
+            return itemValue === normalizedValue;
+        });
+    }
+
+    createSelectionFromInput(instance) {
+        const rawValue = instance.input.value.trim();
+        if (!rawValue) return false;
+
+        const existingItem = this.getExistingItemByValue(instance, rawValue);
+        if (existingItem) {
+            if (this.options.maxSelections > 1 && instance.selections.some(selection => selection.key === existingItem.key)) {
+                this.hideDropdown(instance);
+                instance.input.value = '';
+                return false;
+            }
+
+            this.selectItem(instance, existingItem.key, existingItem.value);
+            return true;
+        }
+
+        const createdItem = this.options.createItem
+            ? this.options.createItem(rawValue, instance)
+            : { key: rawValue, value: rawValue };
+
+        if (!createdItem || createdItem.key == null || createdItem.value == null) {
+            console.error('AvalynxAutocomplete: createItem must return an object with key and value');
+            return false;
+        }
+
+        const normalizedItem = {
+            key: String(createdItem.key),
+            value: String(createdItem.value)
+        };
+
+        if (!instance.createdItems.some(item => item.key === normalizedItem.key)) {
+            instance.createdItems.push(normalizedItem);
+        }
+
+        this.selectItem(instance, normalizedItem.key, normalizedItem.value);
+        return true;
+    }
+
     handleKeydown(e, instance) {
         const { dropdown } = instance;
         const items = dropdown.querySelectorAll('.avalynx-autocomplete-item');
         const activeItem = dropdown.querySelector('.avalynx-autocomplete-item.active');
         let activeIndex = activeItem ? parseInt(activeItem.dataset.index) : -1;
+        const usesPlainEnterShortcut = this.createShortcut &&
+            this.createShortcut.key === 'enter' &&
+            !this.createShortcut.modKey &&
+            !this.createShortcut.ctrlKey &&
+            !this.createShortcut.altKey &&
+            !this.createShortcut.shiftKey &&
+            !this.createShortcut.metaKey;
+
+        if (this.matchesCreateShortcut(e) && instance.input.value.trim() !== '') {
+            if (!activeItem || !usesPlainEnterShortcut) {
+                e.preventDefault();
+                this.createSelectionFromInput(instance);
+                return;
+            }
+        }
 
         switch (e.key) {
             case 'ArrowDown':

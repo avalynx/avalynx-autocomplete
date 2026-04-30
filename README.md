@@ -15,6 +15,7 @@ AvalynxAutocomplete is a lightweight, customizable autocomplete component for we
 - **Customizable Autocomplete Inputs**: Supports various customization options like single- and multi-select, case-sensitivity, minimum length for search, and debouncing.
 - **Flexible Data Sources**: Support for static data or dynamic loading via a custom `fetchData` function.
 - **Multi-Select Support**: Management of multiple selections with tags, which can be displayed either above or inline in the input field.
+- **Optional Entry Creation**: Users can create new entries from typed text with a visible dropdown action or a configurable shortcut such as `Enter`, `Ctrl+Enter`, or `Mod+Enter`.
 - **Bootstrap Integration**: Designed for seamless integration with Bootstrap >= 5.3.
 - **Easy to Use**: Simple API for creating and managing autocomplete fields in your web applications.
 
@@ -151,6 +152,26 @@ new AvalynxAutocomplete("#myAjaxAutocomplete", {
 });
 ```
 
+To allow creating new entries from the typed text:
+
+```javascript
+new AvalynxAutocomplete("#myTagAutocomplete", {
+  data: [
+    { key: '1', value: 'JavaScript' },
+    { key: '2', value: 'TypeScript' }
+  ],
+  maxSelections: 5,
+  allowCreate: true,
+  createShortcut: 'Mod+Enter',
+  createItem: (value) => ({
+    key: value.toLowerCase().replace(/\s+/g, '-'),
+    value
+  })
+});
+```
+
+If the current text does not exactly match an existing entry, the dropdown also shows a clickable **Create "..."** action.
+
 ## Options
 
 AvalynxAutocomplete allows the following options for customization:
@@ -171,6 +192,9 @@ AvalynxAutocomplete allows the following options for customization:
     - `clearStyle`: (string) Style of the clear button (`'button'` or `'icon'`) (default: `'button'`).
     - `data`: (array|null) Static array of data objects `{key, value}` (default: `null`).
     - `fetchData`: (function|null) Asynchronous function for fetching data (default: `null`).
+    - `allowCreate`: (boolean) Allows creating new entries from the current input value (default: `false`).
+    - `createShortcut`: (string) Keyboard shortcut used to create a new entry, e.g. `'Enter'`, `'Ctrl+Enter'`, or `'Mod+Enter'` (`Mod` matches Ctrl/Cmd) (default: `'Enter'`).
+    - `createItem`: (function|null) Maps the typed text to a `{key, value}` object when a new entry is created. If omitted, the typed text is used for both fields (default: `null`).
     - `onChange`: (function) Callback on selection change (default: `null`).
     - `onClear`: (function) Callback when the field is cleared (default: `null`).
     - `onLoaded`: (function) Callback after component initialization (default: `null`).
@@ -178,6 +202,7 @@ AvalynxAutocomplete allows the following options for customization:
     - `placeholder`: (string) Placeholder text for the input field (default: `'Search...'`).
     - `noResults`: (string) Text when no results are found (default: `'No results found'`).
     - `clearTitle`: (string) Title attribute for the clear button (default: `'Clear selection'`).
+    - `createOption`: (function) Formatter for the create action label `(value, shortcut) => string` (default: `Create "{value}" ({shortcut})`).
     - `removeTitle`: (string) Title attribute for removing a tag (default: `'Remove'`).
 
 ## Contributing

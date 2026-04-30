@@ -21,9 +21,14 @@ const createInput = ({
     return input;
 };
 
-const createKeyboardEvent = (key) => ({
+const createKeyboardEvent = (key, overrides = {}) => ({
     key,
-    preventDefault: jest.fn()
+    preventDefault: jest.fn(),
+    ctrlKey: false,
+    altKey: false,
+    shiftKey: false,
+    metaKey: false,
+    ...overrides
 });
 
 describe('AvalynxAutocomplete', () => {
@@ -145,6 +150,7 @@ describe('AvalynxAutocomplete', () => {
         const hideDropdownSpy = jest.spyOn(autocomplete, 'hideDropdown');
         const clearSelectionSpy = jest.spyOn(autocomplete, 'clearSelection').mockImplementation(() => {});
         const selectItemSpy = jest.spyOn(autocomplete, 'selectItem').mockImplementation(() => {});
+        const createSelectionSpy = jest.spyOn(autocomplete, 'createSelectionFromInput').mockReturnValue(true);
         const handleKeydownSpy = jest.spyOn(autocomplete, 'handleKeydown').mockImplementation(() => {});
         const clearTimeoutSpy = jest.spyOn(global, 'clearTimeout');
 
@@ -183,6 +189,12 @@ describe('AvalynxAutocomplete', () => {
         instance.dropdown.appendChild(itemWithoutKey);
         itemWithoutKey.dispatchEvent(new MouseEvent('click', { bubbles: true }));
         expect(selectItemSpy).toHaveBeenCalledTimes(1);
+
+        const createItem = document.createElement('li');
+        createItem.classList.add('avalynx-autocomplete-create-item');
+        instance.dropdown.appendChild(createItem);
+        createItem.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+        expect(createSelectionSpy).toHaveBeenCalledWith(instance);
 
         instance.clearBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
         expect(clearSelectionSpy).toHaveBeenCalledWith(instance);
@@ -238,7 +250,7 @@ describe('AvalynxAutocomplete', () => {
         instance.input.value = '  abc  ';
         await autocomplete.handleInput(instance);
         expect(searchSpy).toHaveBeenCalledWith('abc', instance);
-        expect(renderSpy).toHaveBeenCalledWith(instance, [{ key: '1', value: 'One' }]);
+        expect(renderSpy).toHaveBeenCalledWith(instance, [{ key: '1', value: 'One' }], 'abc');
     });
 
     test('search covers fetchData success and maxSelections filtering', async () => {
@@ -260,6 +272,28 @@ describe('AvalynxAutocomplete', () => {
 
         expect(fetchData).toHaveBeenCalledWith('o');
         expect(results).toEqual([{ key: '2', value: 'Two' }]);
+    });
+
+    test('search includes created items and deduplicates by key', async () => {
+        createInput({ className: 'search-created' });
+        const autocomplete = new AvalynxAutocomplete('.search-created', {
+            data: [
+                { key: '1', value: 'One' }
+            ],
+            allowCreate: true
+        });
+        const instance = autocomplete.instances[0];
+        instance.createdItems = [
+            { key: 'custom', value: 'Custom tag' },
+            { key: '1', value: 'Duplicate one' }
+        ];
+
+        const results = await autocomplete.search('o', instance);
+
+        expect(results).toEqual([
+            { key: 'custom', value: 'Custom tag' },
+            { key: '1', value: 'Duplicate one' }
+        ]);
     });
 
     test('search covers fetchData error and local data case sensitivity', async () => {
@@ -310,21 +344,25 @@ describe('AvalynxAutocomplete', () => {
         expect(nonArrayResults).toEqual([]);
     });
 
-    test('renderDropdown covers empty and populated results', () => {
+    test('renderDropdown covers empty, populated and create-option results', () => {
         createInput({ className: 'render-dropdown' });
-        const autocomplete = new AvalynxAutocomplete('.render-dropdown');
+        const autocomplete = new AvalynxAutocomplete('.render-dropdown', {
+            allowCreate: true,
+            createShortcut: 'Mod+Enter'
+        });
         const instance = autocomplete.instances[0];
 
-        autocomplete.renderDropdown(instance, []);
+        autocomplete.renderDropdown(instance, [], '');
         expect(instance.dropdown.classList.contains('d-none')).toBe(false);
         expect(instance.dropdown.children).toHaveLength(1);
         expect(instance.dropdown.children[0].textContent).toBe('No results found');
 
-        autocomplete.renderDropdown(instance, [{ key: 'x', value: 'X-Ray' }]);
-        expect(instance.dropdown.children).toHaveLength(1);
+        autocomplete.renderDropdown(instance, [{ key: 'x', value: 'X-Ray' }], 'xy');
+        expect(instance.dropdown.children).toHaveLength(2);
         expect(instance.dropdown.children[0].dataset.key).toBe('x');
         expect(instance.dropdown.children[0].dataset.value).toBe('X-Ray');
         expect(instance.dropdown.children[0].dataset.index).toBe('0');
+        expect(instance.dropdown.children[1].textContent).toBe('Create "xy" (Ctrl/Cmd+Enter)');
     });
 
     test('clear element visibility functions work for button and icon modes', () => {
@@ -635,6 +673,301 @@ describe('AvalynxAutocomplete', () => {
         const backspaceNoDelete = createKeyboardEvent('Backspace');
         autocomplete.handleKeydown(backspaceNoDelete, instance);
         expect(removeSpy).toHaveBeenCalledTimes(1);
+    });
+
+    test('handleKeydown creates entries with enter or configurable shortcuts', () => {
+        createInput({ className: 'create-enter' });
+        const enterAutocomplete = new AvalynxAutocomplete('.create-enter', {
+            allowCreate: true
+        });
+        const enterInstance = enterAutocomplete.instances[0];
+        const enterCreateSpy = jest.spyOn(enterAutocomplete, 'createSelectionFromInput').mockReturnValue(true);
+        const enterSelectSpy = jest.spyOn(enterAutocomplete, 'selectItem').mockImplementation(() => {});
+
+        enterInstance.input.value = 'Fresh entry';
+        const enterEvent = createKeyboardEvent('Enter');
+        enterAutocomplete.handleKeydown(enterEvent, enterInstance);
+        expect(enterEvent.preventDefault).toHaveBeenCalled();
+        expect(enterCreateSpy).toHaveBeenCalledWith(enterInstance);
+        expect(enterSelectSpy).not.toHaveBeenCalled();
+
+        const activeItem = document.createElement('li');
+        activeItem.classList.add('avalynx-autocomplete-item', 'active');
+        activeItem.dataset.index = '0';
+        activeItem.dataset.key = 'existing';
+        activeItem.dataset.value = 'Existing';
+        enterInstance.dropdown.appendChild(activeItem);
+
+        const selectEvent = createKeyboardEvent('Enter');
+        enterAutocomplete.handleKeydown(selectEvent, enterInstance);
+        expect(enterSelectSpy).toHaveBeenCalledWith(enterInstance, 'existing', 'Existing');
+        expect(enterCreateSpy).toHaveBeenCalledTimes(1);
+
+        createInput({ className: 'create-ctrl-enter' });
+        const ctrlAutocomplete = new AvalynxAutocomplete('.create-ctrl-enter', {
+            allowCreate: true,
+            createShortcut: 'Mod+Enter'
+        });
+        const ctrlInstance = ctrlAutocomplete.instances[0];
+        const ctrlCreateSpy = jest.spyOn(ctrlAutocomplete, 'createSelectionFromInput').mockReturnValue(true);
+
+        const ctrlActiveItem = document.createElement('li');
+        ctrlActiveItem.classList.add('avalynx-autocomplete-item', 'active');
+        ctrlActiveItem.dataset.index = '0';
+        ctrlActiveItem.dataset.key = 'existing';
+        ctrlActiveItem.dataset.value = 'Existing';
+        ctrlInstance.dropdown.appendChild(ctrlActiveItem);
+        ctrlInstance.input.value = 'Shortcut entry';
+
+        const ctrlEvent = createKeyboardEvent('Enter', { ctrlKey: true });
+        ctrlAutocomplete.handleKeydown(ctrlEvent, ctrlInstance);
+        expect(ctrlEvent.preventDefault).toHaveBeenCalled();
+        expect(ctrlCreateSpy).toHaveBeenCalledWith(ctrlInstance);
+
+        const metaEvent = createKeyboardEvent('Enter', { metaKey: true });
+        ctrlAutocomplete.handleKeydown(metaEvent, ctrlInstance);
+        expect(metaEvent.preventDefault).toHaveBeenCalled();
+        expect(ctrlCreateSpy).toHaveBeenCalledTimes(2);
+    });
+
+    test('createSelectionFromInput reuses exact matches and supports custom item creation', () => {
+        createInput({ className: 'create-item' });
+        const autocomplete = new AvalynxAutocomplete('.create-item', {
+            data: [{ key: 'existing-key', value: 'Existing value' }],
+            allowCreate: true,
+            createItem: (value) => ({
+                key: value.toUpperCase(),
+                value: `New ${value}`
+            })
+        });
+        const instance = autocomplete.instances[0];
+        const selectSpy = jest.spyOn(autocomplete, 'selectItem').mockImplementation(() => {});
+        const hideSpy = jest.spyOn(autocomplete, 'hideDropdown').mockImplementation(() => {});
+
+        instance.input.value = 'Existing value';
+        expect(autocomplete.createSelectionFromInput(instance)).toBe(true);
+        expect(selectSpy).toHaveBeenCalledWith(instance, 'existing-key', 'Existing value');
+
+        instance.input.value = 'custom';
+        expect(autocomplete.createSelectionFromInput(instance)).toBe(true);
+        expect(selectSpy).toHaveBeenCalledWith(instance, 'CUSTOM', 'New custom');
+        expect(instance.createdItems).toEqual([{ key: 'CUSTOM', value: 'New custom' }]);
+
+        autocomplete.options.maxSelections = 2;
+        instance.selections = [{ key: 'existing-key', value: 'Existing value' }];
+        instance.input.value = 'Existing value';
+        expect(autocomplete.createSelectionFromInput(instance)).toBe(false);
+        expect(hideSpy).toHaveBeenCalledWith(instance);
+        expect(instance.input.value).toBe('');
+    });
+
+    test('normalizeCreateShortcut and createSelectionFromInput handle invalid configuration', () => {
+        createInput({ className: 'invalid-create' });
+        const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+        const invalidShortcutAutocomplete = new AvalynxAutocomplete('.invalid-create', {
+            allowCreate: true,
+            createShortcut: 'Ctrl+Hyper+Enter'
+        });
+
+        expect(invalidShortcutAutocomplete.createShortcut).toBeNull();
+        expect(errorSpy).toHaveBeenCalledWith("AvalynxAutocomplete: Unsupported createShortcut modifier 'hyper'");
+
+        createInput({ className: 'invalid-create-item' });
+        const invalidCreateItemAutocomplete = new AvalynxAutocomplete('.invalid-create-item', {
+            allowCreate: true,
+            createItem: () => ({})
+        });
+        const instance = invalidCreateItemAutocomplete.instances[0];
+
+        instance.input.value = 'broken';
+        expect(invalidCreateItemAutocomplete.createSelectionFromInput(instance)).toBe(false);
+        expect(errorSpy).toHaveBeenCalledWith(
+            'AvalynxAutocomplete: createItem must return an object with key and value'
+        );
+    });
+
+    test('normalizeCreateShortcut covers empty, missing key and modifier variants', () => {
+        createInput({ className: 'shortcut-variants' });
+        const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+        const autocomplete = new AvalynxAutocomplete('.shortcut-variants');
+
+        expect(autocomplete.normalizeCreateShortcut('')).toBeNull();
+        expect(errorSpy).toHaveBeenCalledWith('AvalynxAutocomplete: createShortcut must be a non-empty string');
+
+        expect(autocomplete.normalizeCreateShortcut('+')).toBeNull();
+        expect(errorSpy).toHaveBeenCalledWith('AvalynxAutocomplete: createShortcut must include a key');
+
+        expect(autocomplete.normalizeCreateShortcut('Alt+Shift+Meta+Enter')).toEqual({
+            key: 'enter',
+            modKey: false,
+            ctrlKey: false,
+            altKey: true,
+            shiftKey: true,
+            metaKey: true
+        });
+
+        expect(autocomplete.normalizeCreateShortcut('Command+Enter')).toEqual({
+            key: 'enter',
+            modKey: false,
+            ctrlKey: false,
+            altKey: false,
+            shiftKey: false,
+            metaKey: true
+        });
+
+        expect(autocomplete.normalizeCreateShortcut('Mod+Enter')).toEqual({
+            key: 'enter',
+            modKey: true,
+            ctrlKey: false,
+            altKey: false,
+            shiftKey: false,
+            metaKey: false
+        });
+    });
+
+    test('creation helper methods cover fallback and edge-case branches', () => {
+        createInput({ className: 'helper-branches' });
+        const autocomplete = new AvalynxAutocomplete('.helper-branches', {
+            allowCreate: true
+        });
+        const instance = autocomplete.instances[0];
+        const selectSpy = jest.spyOn(autocomplete, 'selectItem').mockImplementation(() => {});
+
+        expect(autocomplete.filterMatchingItems(null, 'a')).toEqual([]);
+
+        autocomplete.options.caseSensitive = true;
+        expect(autocomplete.filterMatchingItems([
+            null,
+            { key: '1', value: 'Alpha' },
+            { key: '2', value: 123 },
+            { key: '3', value: 'beta' }
+        ], 'A')).toEqual([{ key: '1', value: 'Alpha' }]);
+
+        expect(autocomplete.mergeUniqueItems([
+            null,
+            { key: null, value: 'Missing key' },
+            { key: '1', value: 'One' },
+            { key: '1', value: 'Duplicate' }
+        ])).toEqual([{ key: '1', value: 'One' }]);
+
+        instance.createdItems = [{ key: 'custom-key', value: 'Custom Value' }];
+        autocomplete.options.data = 'not-an-array';
+        autocomplete.options.caseSensitive = false;
+        expect(autocomplete.getExistingItemByValue(instance, 'custom value')).toEqual({
+            key: 'custom-key',
+            value: 'Custom Value'
+        });
+
+        autocomplete.options.caseSensitive = true;
+        expect(autocomplete.getExistingItemByValue(instance, 'custom value')).toBeUndefined();
+        expect(autocomplete.getExistingItemByValue(instance, 'Custom Value')).toEqual({
+            key: 'custom-key',
+            value: 'Custom Value'
+        });
+
+        instance.input.value = '   ';
+        expect(autocomplete.createSelectionFromInput(instance)).toBe(false);
+
+        autocomplete.options.caseSensitive = false;
+        instance.createdItems = [];
+        instance.input.value = 'Brand new';
+        expect(autocomplete.createSelectionFromInput(instance)).toBe(true);
+        expect(selectSpy).toHaveBeenCalledWith(instance, 'Brand new', 'Brand new');
+        expect(instance.createdItems).toEqual([{ key: 'Brand new', value: 'Brand new' }]);
+
+        autocomplete.options.createItem = (value) => ({
+            key: 'shared-key',
+            value: value === 'Second raw value' ? 'Second label' : 'First label'
+        });
+
+        instance.input.value = 'First raw value';
+        expect(autocomplete.createSelectionFromInput(instance)).toBe(true);
+        expect(instance.createdItems).toContainEqual({ key: 'shared-key', value: 'First label' });
+
+        instance.input.value = 'Second raw value';
+        expect(autocomplete.createSelectionFromInput(instance)).toBe(true);
+        expect(instance.createdItems.filter(item => item.key === 'shared-key')).toHaveLength(1);
+        expect(selectSpy).toHaveBeenCalledWith(instance, 'shared-key', 'Second label');
+    });
+
+    test('create option helpers cover shortcut labels and existing-item cases', () => {
+        createInput({ className: 'create-option-helpers' });
+        const autocomplete = new AvalynxAutocomplete('.create-option-helpers', {
+            allowCreate: true,
+            createShortcut: 'Ctrl+Meta+Alt+Shift+A',
+            data: [{ key: '1', value: 'Alpha' }]
+        });
+        const instance = autocomplete.instances[0];
+
+        expect(autocomplete.formatCreateShortcutLabel()).toBe('Ctrl+Cmd+Alt+Shift+A');
+
+        autocomplete.options.maxSelections = 1;
+        expect(autocomplete.shouldShowCreateOption(instance, 'Alpha', [])).toBe(false);
+
+        autocomplete.options.maxSelections = 2;
+        instance.selections = [{ key: '1', value: 'Alpha' }];
+        expect(autocomplete.shouldShowCreateOption(instance, 'Alpha', [])).toBe(false);
+
+        instance.selections = [];
+        expect(autocomplete.shouldShowCreateOption(instance, 'Alpha', [])).toBe(true);
+    });
+
+    test('create option formatting covers default callback, missing shortcut and result matching branches', () => {
+        createInput({ className: 'create-option-formatting' });
+        const autocomplete = new AvalynxAutocomplete('.create-option-formatting', {
+            allowCreate: true,
+            createShortcut: null
+        });
+        const instance = autocomplete.instances[0];
+
+        expect(autocomplete.formatCreateShortcutLabel()).toBe('');
+        expect(autocomplete.language.createOption('Beta', '')).toBe('Create "Beta"');
+
+        autocomplete.createShortcut = {
+            key: 'enter',
+            modKey: false,
+            ctrlKey: true,
+            altKey: false,
+            shiftKey: false,
+            metaKey: true
+        };
+        expect(autocomplete.formatCreateShortcutLabel()).toBe('Ctrl+Cmd+Enter');
+
+        autocomplete.createShortcut = {
+            key: 'enter',
+            modKey: false,
+            ctrlKey: true,
+            altKey: false,
+            shiftKey: false,
+            metaKey: false
+        };
+        expect(autocomplete.formatCreateShortcutLabel()).toBe('Ctrl+Enter');
+
+        autocomplete.createShortcut = {
+            key: 'enter',
+            modKey: false,
+            ctrlKey: false,
+            altKey: false,
+            shiftKey: false,
+            metaKey: true
+        };
+        expect(autocomplete.formatCreateShortcutLabel()).toBe('Cmd+Enter');
+
+        autocomplete.options.caseSensitive = true;
+        expect(autocomplete.shouldShowCreateOption(instance, 'Alpha', [{ key: '2', value: 'Alpha' }])).toBe(false);
+
+        autocomplete.createShortcut = {
+            key: 'enter',
+            modKey: false,
+            ctrlKey: true,
+            altKey: false,
+            shiftKey: false,
+            metaKey: true
+        };
+        autocomplete.renderDropdown(instance, []);
+        autocomplete.renderDropdown(instance, [], 'Beta');
+        expect(instance.dropdown.children[1].textContent).toBe('Create "Beta" (Ctrl+Cmd+Enter)');
     });
 
     test('setActiveItem toggles active class and scrollIntoView', () => {

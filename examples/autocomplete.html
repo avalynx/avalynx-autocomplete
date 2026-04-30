@@ -37,7 +37,7 @@
     <br/>
 
 	<div class="alert alert-info">
-		This is an all-in-one example of the AvalynxAutocomplete. It demonstrates various selection modes and styles. Data is fetched from a local array or a PHP script.
+		This is an all-in-one example of the AvalynxAutocomplete. It demonstrates various selection modes and styles, including optional creation of new entries with a keyboard shortcut. Data is fetched from a local array or a PHP script.
 	</div>
 
 	<div class="container py-5">
@@ -151,6 +151,22 @@
 
 							<hr class="my-4">
 
+							<h6 class="text-muted mb-3">Create new entries</h6>
+
+							<div class="mb-4">
+								<label class="form-label">Custom Labels (create via dropdown option or Ctrl/Cmd+Enter)</label>
+								<input
+										type="text"
+										id="customLabelSearch"
+										class="custom-label-autocomplete"
+										data-key-name="custom_labels"
+										placeholder="Search or create a label..."
+								>
+								<small class="text-muted">allowCreate: true, createShortcut: 'Mod+Enter', clickable create option</small>
+							</div>
+
+							<hr class="my-4">
+
 							<button type="submit" class="btn btn-primary">Save</button>
 							<button type="button" id="clearAll" class="btn btn-outline-secondary">Reset All</button>
 						</form>
@@ -195,6 +211,18 @@
 								<td>Number</td>
 								<td><code>1</code></td>
 								<td>1 = Single, >1 = Multi-select</td>
+							</tr>
+							<tr>
+								<td><code>allowCreate</code></td>
+								<td><code>true</code> | <code>false</code></td>
+								<td><code>false</code></td>
+								<td>Allows creating a new entry from the typed text</td>
+							</tr>
+							<tr>
+								<td><code>createShortcut</code></td>
+								<td>String</td>
+								<td><code>'Enter'</code></td>
+								<td>Keyboard shortcut for creating a new entry, e.g. <code>'Ctrl+Enter'</code> or <code>'Mod+Enter'</code></td>
 							</tr>
 							</tbody>
 						</table>
@@ -310,6 +338,25 @@
 			removeTitle: 'Remove'
 		});
 
+		// ========== CREATE NEW ENTRIES ==========
+
+		const customLabelAutocomplete = new AvalynxAutocomplete('.custom-label-autocomplete', {
+			data: tags,
+			maxSelections: 5,
+			tagsPosition: 'inline',
+			allowCreate: true,
+			createShortcut: 'Mod+Enter',
+			createItem: (value) => ({
+				key: 'custom-' + value.toLowerCase().replace(/\s+/g, '-'),
+				value
+			}),
+			onChange: (keys, values) => console.log('Custom labels:', keys, values)
+		}, {
+			placeholder: 'Search or create a label...',
+			noResults: 'No labels found',
+			removeTitle: 'Remove'
+		});
+
 		// ========== FORM HANDLING ==========
 
 		document.getElementById('demoForm').addEventListener('submit', (e) => {
@@ -335,6 +382,7 @@
 			skillAutocomplete.clear();
 			priorityAutocomplete.clear();
 			languageAutocomplete.clear();
+			customLabelAutocomplete.clear();
 			document.getElementById('output').classList.add('d-none');
 		});
 
@@ -481,6 +529,31 @@ const languageAutocomplete = new AvalynxAutocomplete('.language-autocomplete', {
 }, {
   placeholder: 'Add languages (max. 5)...',
   noResults: 'No languages found',
+  removeTitle: 'Remove'
+});
+</code></pre>
+
+    <br/>
+
+    <h3>Source: Custom Labels (Create via option or Ctrl/Cmd+Enter)
+        <a class="p-1 float-end btn btn-secondary btn-small copy-button" data-copy-target="codeCustomLabels">Copy to clipboard</a>
+    </h3>
+    <pre><code class="language-javascript" id="codeCustomLabels">
+// Create new entries with Ctrl/Cmd+Enter
+const customLabelAutocomplete = new AvalynxAutocomplete('.custom-label-autocomplete', {
+  data: tags,
+  maxSelections: 5,
+  tagsPosition: 'inline',
+  allowCreate: true,
+  createShortcut: 'Mod+Enter',
+  createItem: (value) => ({
+    key: 'custom-' + value.toLowerCase().replace(/\s+/g, '-'),
+    value
+  }),
+  onChange: (keys, values) => console.log('Custom labels:', keys, values)
+}, {
+  placeholder: 'Search or create a label...',
+  noResults: 'No labels found',
   removeTitle: 'Remove'
 });
 </code></pre>
