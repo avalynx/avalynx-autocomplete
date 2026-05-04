@@ -3,36 +3,41 @@
  *
  * AvalynxAutocomplete is a lightweight, customizable autocomplete component for web applications. It is designed to be used with Bootstrap version 5.3 or higher and does not require any framework dependencies.
  *
- * @version 1.0.4
+ * @version 1.0.5
  * @license MIT
  * @author https://github.com/avalynx/avalynx-autocomplete/graphs/contributors
  * @website https://github.com/avalynx/
  * @repository https://github.com/avalynx/avalynx-autocomplete.git
  * @bugs https://github.com/avalynx/avalynx-autocomplete/issues
  *
- * @param {string} id - The ID of the element to attach the table to.
+ * @param {string} selector - The selector for the input elements (default: '.avalynx-autocomplete').
  * @param {object} options - An object containing the following keys:
- * @param {string} options.apiUrl - The URL to fetch the data from (default: null).
- * @param {string} options.apiMethod - The HTTP method to use when fetching data from the API (default: 'POST').
- * @param {object} options.apiParams - Additional parameters to send with the API request (default: {}).
- * @param {object} options.sorting - The initial sorting configuration for the table. Format is an array of objects specifying column and direction, e.g., [{"column": "name", "dir": "asc"}] (default: []).
- * @param {number} options.currentPage - The initial page number to display (default: 1).
- * @param {string} options.search - The initial search string to filter the table data (default: '').
- * @param {number} options.searchWait - The debounce time in milliseconds for search input to wait after the last keystroke before performing the search (default: 800).
- * @param {array} options.listPerPage - The list of options for the per-page dropdown (default: [10, 25, 50, 100]).
- * @param {number} options.perPage - The initial number of items per page (default: 10).
- * @param {string} options.className - The CSS classes to apply to the table (default: 'table table-striped table-bordered table-responsive').
- * @param {boolean} options.paginationPrevNext - Whether to show the previous and next buttons in the pagination (default: true).
- * @param {number} options.paginationRange - The number of pages to show on either side of the current page in the pagination (default: 2).
- * @param {object} options.loader - An instance of AvalynxLoader to use as the loader for the table (default: null).
+ * @param {string} options.className - Additional CSS classes for the dropdown (default: '').
+ * @param {number} options.maxItems - Maximum number of results displayed in the dropdown (default: 5).
+ * @param {number} options.maxSelections - Maximum number of selectable items. If > 1, multi-select mode is activated (default: 1).
+ * @param {number} options.minLength - Minimum number of characters to start the search (default: 1).
+ * @param {number} options.debounce - Delay in milliseconds after the last keystroke (default: 300).
+ * @param {boolean} options.caseSensitive - Case-sensitive search (default: false).
+ * @param {boolean} options.disabled - Initialize in a disabled state (default: false).
+ * @param {string|null} options.defaultValue - Default value (label) upon initialization (default: null).
+ * @param {string|null} options.defaultKey - Default key upon initialization (default: null).
+ * @param {array|null} options.defaultSelections - Array of objects {key, value} for multi-select default values (default: null).
+ * @param {string} options.tagsPosition - Position of tags in multi-select ('above' | 'inline') (default: 'above').
+ * @param {string} options.clearStyle - Style of the clear button ('button' | 'icon') (default: 'button').
+ * @param {array|null} options.data - Static array of data objects {key, value} (default: null).
+ * @param {function|null} options.fetchData - Asynchronous function for fetching data (default: null).
+ * @param {boolean} options.allowCreate - Allows creating new entries from the current input value (default: false).
+ * @param {string} options.createShortcut - Keyboard shortcut used to create a new entry (default: 'Enter').
+ * @param {function|null} options.createItem - Maps the typed text to a {key, value} object when a new entry is created (default: null).
+ * @param {function|null} options.onChange - Callback on selection change (default: null).
+ * @param {function|null} options.onClear - Callback when the field is cleared (default: null).
+ * @param {function|null} options.onLoaded - Callback after component initialization (default: null).
  * @param {object} language - An object containing the following keys:
- * @param {string} language.showLabel - The label for the per-page select (default: 'Show').
- * @param {string} language.entriesLabel - The label next to the per-page select indicating what the numbers represent (default: 'entries').
- * @param {string} language.searchLabel - The label for the search input (default: 'Search').
- * @param {string} language.previousLabel - The label for the pagination's previous button (default: 'Previous').
- * @param {string} language.nextLabel - The label for the pagination's next button (default: 'Next').
- * @param {function} language.showingEntries - A function to format the text showing the range of visible entries out of the total (default: (start, end, total) => 'Showing ${start} to ${end} of ${total} entries').
- * @param {function} language.showingFilteredEntries - A function to format the text showing the range of visible entries out of the total when filtered (default: (start, end, filtered, total) => 'Showing ${start} to ${end} of ${filtered} entries (filtered from ${total} entries)').
+ * @param {string} language.placeholder - Placeholder text for the input field (default: 'Search...').
+ * @param {string} language.noResults - Text when no results are found (default: 'No results found').
+ * @param {function} language.createOption - Formatter for the create action label (value, shortcut) => string (default: Create "{value}" ({shortcut})).
+ * @param {string} language.clearTitle - Title attribute for the clear button (default: 'Clear selection').
+ * @param {string} language.removeTitle - Title attribute for removing a tag (default: 'Remove').
  *
  */
 

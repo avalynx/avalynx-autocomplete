@@ -37,6 +37,7 @@ Hier ist eine Übersicht über verschiedene Anwendungsfälle für AvalynxAutocom
 * [Multi-Select (Tags inline, Button-Stil, Ajax)](https://avalynx-autocomplete.jbs-newmedia.de/examples/multi-select-inline-button-ajax.html)
 * [Multi-Select (Tags inline, Icon-Stil)](https://avalynx-autocomplete.jbs-newmedia.de/examples/multi-select-inline-icon.html)
 * [Multi-Select (Tags inline, Icon-Stil, Ajax)](https://avalynx-autocomplete.jbs-newmedia.de/examples/multi-select-inline-icon-ajax.html)
+* [Multi-Select (Erstellen mit Enter)](https://avalynx-autocomplete.jbs-newmedia.de/examples/multi-select-create-enter.html)
 
 ## Installation
 
@@ -64,8 +65,8 @@ Ersetzen Sie `pfad/zu/` durch den tatsächlichen Pfad zur Datei in Ihrem Projekt
 AvalynxAutocomplete ist auch über [jsDelivr](https://www.jsdelivr.com/) verfügbar. Sie können es wie folgt in Ihr Projekt einbinden:
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/avalynx-autocomplete@1.0.4/dist/css/avalynx-autocomplete.css">
-<script src="https://cdn.jsdelivr.net/npm/avalynx-autocomplete@1.0.4/dist/js/avalynx-autocomplete.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/avalynx-autocomplete@1.0.5/dist/css/avalynx-autocomplete.css">
+<script src="https://cdn.jsdelivr.net/npm/avalynx-autocomplete@1.0.5/dist/js/avalynx-autocomplete.js"></script>
 ```
 
 Stellen Sie sicher, dass Sie auch das JS/CSS von Bootstrap in Ihr Projekt einbinden.
