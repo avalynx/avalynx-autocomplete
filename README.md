@@ -1,12 +1,14 @@
 # AvalynxAutocomplete
 
-[![npm version](https://img.shields.io/npm/v/avalynx-autocomplete)](https://www.npmjs.com/package/avalynx-autocomplete)
-[![npm downloads](https://img.shields.io/npm/dt/avalynx-autocomplete)](https://www.npmjs.com/package/avalynx-autocomplete)
-[![jsDelivr](https://img.shields.io/jsdelivr/npm/hm/avalynx-autocomplete)](https://www.jsdelivr.com/package/npm/avalynx-autocomplete)
-[![License](https://img.shields.io/npm/l/avalynx-autocomplete)](LICENSE)
-[![Tests](https://github.com/avalynx/avalynx-autocomplete/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/avalynx/avalynx-autocomplete/actions/workflows/tests.yml)
-[![codecov](https://codecov.io/gh/avalynx/avalynx-autocomplete/branch/main/graph/badge.svg)](https://codecov.io/gh/avalynx/avalynx-autocomplete)
-[![GitHub stars](https://img.shields.io/github/stars/avalynx/avalynx-autocomplete?style=flat&logo=github)](https://github.com/avalynx/avalynx-autocomplete)
+[![npm version](https://jbs-newmedia.de/badge/npm/avalynx-autocomplete/version.svg)](https://www.npmjs.com/package/avalynx-autocomplete)
+[![npm downloads](https://jbs-newmedia.de/badge/npm/avalynx-autocomplete/download.svg)](https://www.npmjs.com/package/avalynx-autocomplete)
+[![Composer version](https://jbs-newmedia.de/badge/composer/avalynx/avalynx-autocomplete/version.svg)](https://packagist.org/packages/avalynx/avalynx-autocomplete)
+[![Composer downloads](https://jbs-newmedia.de/badge/composer/avalynx/avalynx-autocomplete/download.svg)](https://packagist.org/packages/avalynx/avalynx-autocomplete)
+[![jsDelivr](https://jbs-newmedia.de/badge/jsdelivr/avalynx-autocomplete/hits.svg)](https://www.jsdelivr.com/package/npm/avalynx-autocomplete)
+[![License](https://jbs-newmedia.de/badge/npm/avalynx-autocomplete/license.svg)](LICENSE)
+[![Tests](https://jbs-newmedia.de/badge/github/avalynx/avalynx-autocomplete/tests.svg)](https://github.com/avalynx/avalynx-autocomplete/actions/workflows/tests.yml)
+[![codecov](https://jbs-newmedia.de/badge/codecov/avalynx/avalynx-autocomplete/coverage.svg)](https://codecov.io/gh/avalynx/avalynx-autocomplete)
+[![GitHub stars](https://jbs-newmedia.de/badge/github/avalynx/avalynx-autocomplete/stars.svg)](https://github.com/avalynx/avalynx-autocomplete)
 
 AvalynxAutocomplete is a lightweight, customizable autocomplete component for web applications. It is designed to be used with Bootstrap version 5.3 or higher and does not require any framework dependencies.
 
@@ -15,12 +17,13 @@ AvalynxAutocomplete is a lightweight, customizable autocomplete component for we
 - **Customizable Autocomplete Inputs**: Supports various customization options like single- and multi-select, case-sensitivity, minimum length for search, and debouncing.
 - **Flexible Data Sources**: Support for static data or dynamic loading via a custom `fetchData` function.
 - **Multi-Select Support**: Management of multiple selections with tags, which can be displayed either above or inline in the input field.
+- **Optional Entry Creation**: Users can create new entries from typed text with a visible dropdown action or a configurable shortcut such as `Enter`, `Ctrl+Enter`, or `Mod+Enter`.
 - **Bootstrap Integration**: Designed for seamless integration with Bootstrap >= 5.3.
 - **Easy to Use**: Simple API for creating and managing autocomplete fields in your web applications.
 
 ## Examples
 
-Here is an overview of various use cases for AvalynxAutocomplete:
+Here's a simple example of how to use AvalynxAutocomplete in your project:
 
 * [Overview](https://avalynx-autocomplete.jbs-newmedia.de/examples/index.html)
 * [All-in-one Demo](https://avalynx-autocomplete.jbs-newmedia.de/examples/autocomplete.html)
@@ -36,6 +39,7 @@ Here is an overview of various use cases for AvalynxAutocomplete:
 * [Multi-select (Tags inline, Button Style, Ajax)](https://avalynx-autocomplete.jbs-newmedia.de/examples/multi-select-inline-button-ajax.html)
 * [Multi-select (Tags inline, Icon Style)](https://avalynx-autocomplete.jbs-newmedia.de/examples/multi-select-inline-icon.html)
 * [Multi-select (Tags inline, Icon Style, Ajax)](https://avalynx-autocomplete.jbs-newmedia.de/examples/multi-select-inline-icon-ajax.html)
+* [Multi-select (Create with Enter)](https://avalynx-autocomplete.jbs-newmedia.de/examples/multi-select-create-enter.html)
 
 ## Installation
 
@@ -63,8 +67,8 @@ Replace `path/to/` with the actual path to the file in your project.
 AvalynxAutocomplete is also available via [jsDelivr](https://www.jsdelivr.com/). You can include it in your project like this:
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/avalynx-autocomplete@1.0.4/dist/css/avalynx-autocomplete.css">
-<script src="https://cdn.jsdelivr.net/npm/avalynx-autocomplete@1.0.4/dist/js/avalynx-autocomplete.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/avalynx-autocomplete@1.0.5/dist/css/avalynx-autocomplete.css">
+<script src="https://cdn.jsdelivr.net/npm/avalynx-autocomplete@1.0.5/dist/js/avalynx-autocomplete.js"></script>
 ```
 
 Make sure to also include Bootstrap's JS/CSS in your project.
@@ -151,6 +155,26 @@ new AvalynxAutocomplete("#myAjaxAutocomplete", {
 });
 ```
 
+To allow creating new entries from the typed text:
+
+```javascript
+new AvalynxAutocomplete("#myTagAutocomplete", {
+  data: [
+    { key: '1', value: 'JavaScript' },
+    { key: '2', value: 'TypeScript' }
+  ],
+  maxSelections: 5,
+  allowCreate: true,
+  createShortcut: 'Mod+Enter',
+  createItem: (value) => ({
+    key: value.toLowerCase().replace(/\s+/g, '-'),
+    value
+  })
+});
+```
+
+If the current text does not exactly match an existing entry, the dropdown also shows a clickable **Create "..."** action.
+
 ## Options
 
 AvalynxAutocomplete allows the following options for customization:
@@ -171,6 +195,9 @@ AvalynxAutocomplete allows the following options for customization:
     - `clearStyle`: (string) Style of the clear button (`'button'` or `'icon'`) (default: `'button'`).
     - `data`: (array|null) Static array of data objects `{key, value}` (default: `null`).
     - `fetchData`: (function|null) Asynchronous function for fetching data (default: `null`).
+    - `allowCreate`: (boolean) Allows creating new entries from the current input value (default: `false`).
+    - `createShortcut`: (string) Keyboard shortcut used to create a new entry, e.g. `'Enter'`, `'Ctrl+Enter'`, or `'Mod+Enter'` (`Mod` matches Ctrl/Cmd) (default: `'Enter'`).
+    - `createItem`: (function|null) Maps the typed text to a `{key, value}` object when a new entry is created. If omitted, the typed text is used for both fields (default: `null`).
     - `onChange`: (function) Callback on selection change (default: `null`).
     - `onClear`: (function) Callback when the field is cleared (default: `null`).
     - `onLoaded`: (function) Callback after component initialization (default: `null`).
@@ -178,6 +205,7 @@ AvalynxAutocomplete allows the following options for customization:
     - `placeholder`: (string) Placeholder text for the input field (default: `'Search...'`).
     - `noResults`: (string) Text when no results are found (default: `'No results found'`).
     - `clearTitle`: (string) Title attribute for the clear button (default: `'Clear selection'`).
+    - `createOption`: (function) Formatter for the create action label `(value, shortcut) => string` (default: `Create "{value}" ({shortcut})`).
     - `removeTitle`: (string) Title attribute for removing a tag (default: `'Remove'`).
 
 ## Contributing
@@ -196,6 +224,6 @@ AvalynxAutocomplete is open-source software licensed under the [MIT license](LIC
 
 ## Contact
 
-If you have any questions, feature requests, or issues, please open an issue in our [GitHub repository](https://github.com/avalynx/avalynx-autocomplete/issues) or submit a pull request.
+If you have any questions, feature requests, or issues, please open an issue on our [GitHub repository](https://github.com/avalynx/avalynx-autocomplete/issues) or submit a pull request.
 
 Thank you for considering AvalynxAutocomplete for your project!
