@@ -25,13 +25,14 @@
  * @param {string} options.tagsPosition - Position of tags in multi-select ('above' | 'inline') (default: 'above').
  * @param {string} options.clearStyle - Style of the clear button ('button' | 'icon') (default: 'button').
  * @param {array|null} options.data - Static array of data objects {key, value} (default: null).
- * @param {function|null} options.fetchData - Asynchronous function for fetching data (default: null).
+ * @param {function} options.fetchData - Asynchronous function for fetching data (default: null).
  * @param {boolean} options.allowCreate - Allows creating new entries from the current input value (default: false).
  * @param {string} options.createShortcut - Keyboard shortcut used to create a new entry (default: 'Enter').
- * @param {function|null} options.createItem - Maps the typed text to a {key, value} object when a new entry is created (default: null).
- * @param {function|null} options.onChange - Callback on selection change (default: null).
- * @param {function|null} options.onClear - Callback when the field is cleared (default: null).
- * @param {function|null} options.onLoaded - Callback after component initialization (default: null).
+ * @param {function} options.createItem - Maps the typed text to a {key, value} object when a new entry is created (default: null).
+ * @param {function} options.onChange - Callback on selection change (default: null).
+ * @param {function} options.onClear - Callback when the field is cleared (default: null).
+ * @param {function} options.onLoaded - Callback after component initialization (default: null).
+ *
  * @param {object} language - An object containing the following keys:
  * @param {string} language.placeholder - Placeholder text for the input field (default: 'Search...').
  * @param {string} language.noResults - Text when no results are found (default: 'No results found').
@@ -63,8 +64,8 @@ class AvalynxAutocomplete {
             defaultValue: null,
             defaultKey: null,
             defaultSelections: null,
-            tagsPosition: 'above',   // 'above' | 'inline'
-            clearStyle: 'button',    // 'button' | 'icon'
+            tagsPosition: 'above',
+            clearStyle: 'button',
             data: null,
             fetchData: null,
             allowCreate: false,
@@ -126,7 +127,6 @@ class AvalynxAutocomplete {
         wrapper.classList.add('avalynx-autocomplete-wrapper', 'position-relative');
         input.parentNode.insertBefore(wrapper, input);
 
-        // Tags oberhalb (nur bei Multi + above)
         if (isMulti && !isInline) {
             const tagsContainer = document.createElement('div');
             tagsContainer.classList.add('avalynx-autocomplete-tags', 'd-flex', 'flex-wrap', 'gap-1', 'mb-2');
@@ -138,7 +138,6 @@ class AvalynxAutocomplete {
         inputGroup.classList.add(isIconStyle ? 'position-relative' : 'input-group');
         wrapper.appendChild(inputGroup);
 
-        // Inline-Modus: Input-Container mit Tags
         if (isMulti && isInline) {
             const inputContainer = document.createElement('div');
             inputContainer.classList.add(
@@ -156,7 +155,6 @@ class AvalynxAutocomplete {
             inputContainer.appendChild(tagsContainer);
             instance.tagsContainer = tagsContainer;
 
-            // Input stylen für inline
             input.classList.add('avalynx-autocomplete-inline-input', 'flex-grow-1');
             inputContainer.appendChild(input);
 
@@ -179,14 +177,12 @@ class AvalynxAutocomplete {
         input.setAttribute('autocomplete', 'off');
         input.placeholder = input.placeholder || this.language.placeholder;
 
-        // Hidden Input
         const hiddenInput = document.createElement('input');
         hiddenInput.type = 'hidden';
         hiddenInput.name = input.dataset.keyName || (input.name ? input.name + '_key' : 'avalynx_autocomplete_key');
         inputGroup.appendChild(hiddenInput);
         instance.hiddenInput = hiddenInput;
 
-        // Clear Element (Button oder Icon)
         if (isIconStyle) {
             const clearIcon = document.createElement('span');
             clearIcon.classList.add('avalynx-autocomplete-clear-icon', 'd-none');
@@ -204,7 +200,6 @@ class AvalynxAutocomplete {
             instance.clearBtn = clearBtn;
         }
 
-        // Dropdown
         const dropdown = document.createElement('ul');
         dropdown.classList.add('avalynx-autocomplete-dropdown', 'list-group', 'position-absolute', 'w-100', 'd-none', 'shadow-sm');
         dropdown.style.zIndex = '1050';
@@ -244,7 +239,6 @@ class AvalynxAutocomplete {
             }
         });
 
-        // Clear Event - Button oder Icon
         const clearElement = clearBtn || clearIcon;
         if (clearElement) {
             clearElement.addEventListener('click', () => this.clearSelection(instance));
@@ -697,7 +691,6 @@ class AvalynxAutocomplete {
                 this.hideDropdown(instance);
                 break;
             case 'Backspace':
-                // Im Inline-Modus: letzten Tag löschen wenn Input leer
                 if (this.options.tagsPosition === 'inline' &&
                     this.options.maxSelections > 1 &&
                     instance.input.value === '' &&

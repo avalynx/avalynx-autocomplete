@@ -1,12 +1,12 @@
 # AvalynxAutocomplete
 
-[![npm version](https://img.shields.io/npm/v/avalynx-autocomplete)](https://www.npmjs.com/package/avalynx-autocomplete)
-[![npm downloads](https://img.shields.io/npm/dt/avalynx-autocomplete)](https://www.npmjs.com/package/avalynx-autocomplete)
-[![jsDelivr](https://img.shields.io/jsdelivr/npm/hm/avalynx-autocomplete)](https://www.jsdelivr.com/package/npm/avalynx-autocomplete)
-[![License](https://img.shields.io/npm/l/avalynx-autocomplete)](LICENSE)
-[![Tests](https://github.com/avalynx/avalynx-autocomplete/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/avalynx/avalynx-autocomplete/actions/workflows/tests.yml)
-[![codecov](https://codecov.io/gh/avalynx/avalynx-autocomplete/branch/main/graph/badge.svg)](https://codecov.io/gh/avalynx/avalynx-autocomplete)
-[![GitHub stars](https://img.shields.io/github/stars/avalynx/avalynx-autocomplete?style=flat&logo=github)](https://github.com/avalynx/avalynx-autocomplete)
+[![npm version](https://jbs-newmedia.de/badge/npm/avalynx-autocomplete/version.svg)](https://www.npmjs.com/package/avalynx-autocomplete)
+[![npm downloads](https://jbs-newmedia.de/badge/npm/avalynx-autocomplete/download.svg)](https://www.npmjs.com/package/avalynx-autocomplete)
+[![jsDelivr](https://jbs-newmedia.de/badge/jsdelivr/avalynx-autocomplete/hits.svg)](https://www.jsdelivr.com/package/npm/avalynx-autocomplete)
+[![License](https://jbs-newmedia.de/badge/npm/avalynx-autocomplete/license.svg)](LICENSE)
+[![Tests](https://jbs-newmedia.de/badge/github/avalynx/avalynx-autocomplete/tests.svg)](https://github.com/avalynx/avalynx-autocomplete/actions/workflows/tests.yml)
+[![codecov](https://jbs-newmedia.de/badge/codecov/avalynx/avalynx-autocomplete/coverage.svg)](https://codecov.io/gh/avalynx/avalynx-autocomplete)
+[![GitHub stars](https://jbs-newmedia.de/badge/github/avalynx/avalynx-autocomplete/stars.svg)](https://github.com/avalynx/avalynx-autocomplete)
 
 AvalynxAutocomplete ist eine leichtgewichtige, anpassbare Autocomplete-Komponente für Webanwendungen. Sie wurde für die Verwendung mit Bootstrap Version 5.3 oder höher entwickelt und benötigt keine Framework-Abhängigkeiten.
 
@@ -21,7 +21,7 @@ AvalynxAutocomplete ist eine leichtgewichtige, anpassbare Autocomplete-Komponent
 
 ## Beispiele
 
-Hier ist eine Übersicht über verschiedene Anwendungsfälle für AvalynxAutocomplete:
+Hier ist ein einfaches Beispiel für die Verwendung von AvalynxAutocomplete in Ihrem Projekt:
 
 * [Übersicht](https://avalynx-autocomplete.jbs-newmedia.de/examples/index.html)
 * [All-in-One-Demo](https://avalynx-autocomplete.jbs-newmedia.de/examples/autocomplete.html)
@@ -175,7 +175,7 @@ Wenn der aktuelle Text keinem bestehenden Eintrag exakt entspricht, zeigt das Dr
 
 ## Optionen
 
-AvalynxAutocomplete erlaubt die folgenden Optionen zur Anpassung:
+AvalynxAutocomplete ermöglicht die folgenden Optionen zur Anpassung:
 
 - `selector`: (string) Der Selektor für die Eingabeelemente (Standard: `'.avalynx-autocomplete'`).
 - `options`: Ein Objekt, das die folgenden Schlüssel enthält:
@@ -206,9 +206,9 @@ AvalynxAutocomplete erlaubt die folgenden Optionen zur Anpassung:
     - `createOption`: (function) Formatter für die Beschriftung der Erstellen-Aktion `(value, shortcut) => string` (Standard: `Create "{value}" ({shortcut})`).
     - `removeTitle`: (string) Titel-Attribut zum Entfernen eines Tags (Standard: `'Remove'`).
 
-## Mitwirken
+## Beitragen
 
-Beiträge sind willkommen! Wenn Sie beitragen möchten, forken Sie bitte das Repository und senden Sie einen Pull-Request mit Ihren Änderungen oder Verbesserungen. Wir suchen nach Beiträgen in den folgenden Bereichen:
+Beiträge sind willkommen! Wenn Sie etwas beitragen möchten, forken Sie bitte das Repository und senden Sie einen Pull-Request mit Ihren Änderungen oder Verbesserungen. Wir suchen Beiträge in den folgenden Bereichen:
 
 - Fehlerbehebungen
 - Funktionserweiterungen
@@ -222,6 +222,6 @@ AvalynxAutocomplete ist Open-Source-Software, die unter der [MIT-Lizenz](LICENSE
 
 ## Kontakt
 
-Wenn Sie Fragen, Funktionswünsche oder Probleme haben, öffnen Sie bitte ein Issue in unserem [GitHub-Repository](https://github.com/avalynx/avalynx-autocomplete/issues) oder senden Sie einen Pull-Request.
+Wenn Sie Fragen, Funktionswünsche oder Probleme haben, eröffnen Sie bitte ein Issue in unserem [GitHub-Repository](https://github.com/avalynx/avalynx-autocomplete/issues) oder reichen Sie einen Pull-Request ein.
 
 Vielen Dank, dass Sie AvalynxAutocomplete für Ihr Projekt in Betracht ziehen!

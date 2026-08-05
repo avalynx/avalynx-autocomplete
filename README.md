@@ -1,12 +1,14 @@
 # AvalynxAutocomplete
 
-[![npm version](https://img.shields.io/npm/v/avalynx-autocomplete)](https://www.npmjs.com/package/avalynx-autocomplete)
-[![npm downloads](https://img.shields.io/npm/dt/avalynx-autocomplete)](https://www.npmjs.com/package/avalynx-autocomplete)
-[![jsDelivr](https://img.shields.io/jsdelivr/npm/hm/avalynx-autocomplete)](https://www.jsdelivr.com/package/npm/avalynx-autocomplete)
-[![License](https://img.shields.io/npm/l/avalynx-autocomplete)](LICENSE)
-[![Tests](https://github.com/avalynx/avalynx-autocomplete/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/avalynx/avalynx-autocomplete/actions/workflows/tests.yml)
-[![codecov](https://codecov.io/gh/avalynx/avalynx-autocomplete/branch/main/graph/badge.svg)](https://codecov.io/gh/avalynx/avalynx-autocomplete)
-[![GitHub stars](https://img.shields.io/github/stars/avalynx/avalynx-autocomplete?style=flat&logo=github)](https://github.com/avalynx/avalynx-autocomplete)
+[![npm version](https://jbs-newmedia.de/badge/npm/avalynx-autocomplete/version.svg)](https://www.npmjs.com/package/avalynx-autocomplete)
+[![npm downloads](https://jbs-newmedia.de/badge/npm/avalynx-autocomplete/download.svg)](https://www.npmjs.com/package/avalynx-autocomplete)
+[![Composer version](https://jbs-newmedia.de/badge/composer/avalynx/avalynx-autocomplete/version.svg)](https://packagist.org/packages/avalynx/avalynx-autocomplete)
+[![Composer downloads](https://jbs-newmedia.de/badge/composer/avalynx/avalynx-autocomplete/download.svg)](https://packagist.org/packages/avalynx/avalynx-autocomplete)
+[![jsDelivr](https://jbs-newmedia.de/badge/jsdelivr/avalynx-autocomplete/hits.svg)](https://www.jsdelivr.com/package/npm/avalynx-autocomplete)
+[![License](https://jbs-newmedia.de/badge/npm/avalynx-autocomplete/license.svg)](LICENSE)
+[![Tests](https://jbs-newmedia.de/badge/github/avalynx/avalynx-autocomplete/tests.svg)](https://github.com/avalynx/avalynx-autocomplete/actions/workflows/tests.yml)
+[![codecov](https://jbs-newmedia.de/badge/codecov/avalynx/avalynx-autocomplete/coverage.svg)](https://codecov.io/gh/avalynx/avalynx-autocomplete)
+[![GitHub stars](https://jbs-newmedia.de/badge/github/avalynx/avalynx-autocomplete/stars.svg)](https://github.com/avalynx/avalynx-autocomplete)
 
 AvalynxAutocomplete is a lightweight, customizable autocomplete component for web applications. It is designed to be used with Bootstrap version 5.3 or higher and does not require any framework dependencies.
 
@@ -21,7 +23,7 @@ AvalynxAutocomplete is a lightweight, customizable autocomplete component for we
 
 ## Examples
 
-Here is an overview of various use cases for AvalynxAutocomplete:
+Here's a simple example of how to use AvalynxAutocomplete in your project:
 
 * [Overview](https://avalynx-autocomplete.jbs-newmedia.de/examples/index.html)
 * [All-in-one Demo](https://avalynx-autocomplete.jbs-newmedia.de/examples/autocomplete.html)
@@ -222,6 +224,6 @@ AvalynxAutocomplete is open-source software licensed under the [MIT license](LIC
 
 ## Contact
 
-If you have any questions, feature requests, or issues, please open an issue in our [GitHub repository](https://github.com/avalynx/avalynx-autocomplete/issues) or submit a pull request.
+If you have any questions, feature requests, or issues, please open an issue on our [GitHub repository](https://github.com/avalynx/avalynx-autocomplete/issues) or submit a pull request.
 
 Thank you for considering AvalynxAutocomplete for your project!
